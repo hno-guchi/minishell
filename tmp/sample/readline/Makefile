@@ -21,3 +21,6 @@ rl_replace_line:
 
 rl_redisplay:
 	$(CC) $(G_ADDRESS_FLAGS) $(CFLAGS) $(LDFLAGS) rl_redisplay.c
+
+alternate_interface:
+	$(CC) $(G_ADDRESS_FLAGS) $(CFLAGS) $(LDFLAGS) alternate_interface_example.c
