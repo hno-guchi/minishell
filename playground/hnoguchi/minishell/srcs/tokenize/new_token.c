@@ -1,0 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   new_token.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
+/*   Updated: 2023/03/02 16:56:18 by hnoguchi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+t_token	*new_token(t_token_kind kind, char *word)
+{
+	t_token	*new_token;
+
+	new_token = ft_calloc(1, sizeof(t_token));
+	if (new_token == NULL)
+	{
+		fatal_error("calloc");
+	}
+	new_token->word = word;
+	new_token->kind = kind;
+	new_token->next = NULL;
+	return (new_token);
+}
