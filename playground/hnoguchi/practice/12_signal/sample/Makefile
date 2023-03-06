@@ -2,9 +2,11 @@
 # Variables #
 #############
 
-NAME_1 = variable
-NAME_2 = expand
-NAME_3 = special_param
+NAME_1 = signal
+NAME_2 = redisplay
+NAME_3 = on_new_line
+NAME_4 = clear_history
+NAME_5 = replace_line
 
 CC = cc
 G_FLAGS = -Wall -Wextra -Werror
@@ -15,27 +17,34 @@ LIBRARIES = -lreadline -lhistory
 # General Rules #
 #################
 
-.PHONY: $(NAME_1) $(NAME_2) $(NAME_3)
+.PHONY: $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5)
 
 $(NAME_1):
-	$(CC) -o $@ $(G_FLAGS) variable.c
-	# $(CC) -o $@ $(G_SANITIZE) only_getenv.c
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) signal.c $(LIBRARIES)
 
 $(NAME_2):
-	# $(CC) -o $@ $(G_FLAGS) variable.c expand.c
-	$(CC) -o $@ $(G_SANITIZE) variable.c special_param.c expand.c
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_redisplay.c $(LIBRARIES)
 
 $(NAME_3):
-	$(CC) -o $@ $(G_FLAGS) special_param.c
-	# $(CC) -o $@ $(G_SANITIZE) variable.c expand.c
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_on_new_line.c $(LIBRARIES)
+
+$(NAME_4):
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_clear_history.c $(LIBRARIES)
+
+$(NAME_5):
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_replace_line.c $(LIBRARIES)
 
 fclean:
 	$(RM) $(NAME_1)
 	$(RM) $(NAME_2)
 	$(RM) $(NAME_3)
+	$(RM) $(NAME_4)
+	$(RM) $(NAME_5)
 	$(RM) -r $(NAME_1).dSYM
 	$(RM) -r $(NAME_2).dSYM
 	$(RM) -r $(NAME_3).dSYM
+	$(RM) -r $(NAME_4).dSYM
+	$(RM) -r $(NAME_5).dSYM
 
 #########################
 # Platform Compatibilty #

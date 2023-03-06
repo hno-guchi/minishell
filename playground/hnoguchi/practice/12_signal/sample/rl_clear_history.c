@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rl_replace_line.c                                  :+:      :+:    :+:   */
+/*   rl_clear_history.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/06 17:32:11 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/06 20:08:17 by hnoguchi         ###   ########.fr       */
+/*   Created: 2023/03/06 16:59:39 by hnoguchi          #+#    #+#             */
+/*   Updated: 2023/03/06 17:31:02 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-
-/*
- * https://stackoverflow.com/questions/53165704/readline-c-force-return-of-certain-text-in-readline
- */
 
 int	main(void)
 {
@@ -37,9 +33,12 @@ int	main(void)
 		{
 			add_history(line);
 		}
-		rl_replace_line("", 0);
-		rl_redisplay();
+		if (strcmp(line, "clear") == 0)
+		{
+			// それまで、保持していた履歴を削除する。
+			rl_clear_history();
+		}
 		free(line);
 	}
-	exit (EXIT_FAILURE);
+	exit (EXIT_SUCCESS);
 }
