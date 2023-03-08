@@ -7,6 +7,7 @@ NAME_2 = redisplay
 NAME_3 = on_new_line
 NAME_4 = clear_history
 NAME_5 = replace_line
+NAME_6 = rl_signal
 
 CC = cc
 G_FLAGS = -Wall -Wextra -Werror
@@ -17,7 +18,7 @@ LIBRARIES = -lreadline -lhistory
 # General Rules #
 #################
 
-.PHONY: $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5)
+.PHONY: $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6)
 
 $(NAME_1):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) signal.c $(LIBRARIES)
@@ -33,6 +34,9 @@ $(NAME_4):
 
 $(NAME_5):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_replace_line.c $(LIBRARIES)
+
+$(NAME_6):
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_signal.c $(LIBRARIES)
 
 fclean:
 	$(RM) $(NAME_1)
