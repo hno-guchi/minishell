@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/08 12:28:59 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/08 14:54:42 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	do_child(t_node *node, int *pipe_fd, int *prev_fd)
 
 	argv = NULL;
 	path = NULL;
-	reset_signals();
+	// reset_signals();
 	prepare_pipe_child(node, pipe_fd, prev_fd);
 	redirect_file(node->command);
 	path = create_path(node->command->args->word);
@@ -117,5 +117,7 @@ int	exec_pipeline(t_node *node, int *prev_fd)
 			if (close(pipe_fd[0]) < 0)
 				assert_error("close");
 	}
+	dprintf(STDERR_FILENO, "node->command->args->word = [%s];\n", node->command->args->word);
+	dprintf(STDERR_FILENO, "pid = [%d];\n", pid);
 	return (pid);
 }

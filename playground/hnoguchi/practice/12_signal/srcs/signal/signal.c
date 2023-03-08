@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 08:39:49 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/08 12:39:44 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/08 14:41:46 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	initialize_sa(int signal, struct sigaction *sa)
 	}
 }
 
-static void	signal_default_handler(int signal)
+void	signal_default_handler(int signal)
 {
 	struct sigaction	sa;
 
@@ -60,7 +60,11 @@ void	initialize_signals(void)
 	extern int	_rl_echo_control_chars;
 
 	_rl_echo_control_chars = 0;
-	rl_event_hook = event;
+	rl_outstream = stderr;
+	if (isatty(STDIN_FILENO))
+	{
+		rl_event_hook = event;
+	}
 	signal(SIGINT, signal_interrupted_handler);
 }
 

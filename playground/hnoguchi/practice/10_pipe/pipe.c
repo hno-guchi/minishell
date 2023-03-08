@@ -6,14 +6,15 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 18:03:58 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/02/24 08:04:59 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:33:31 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	prepare_pipe(int *pipe_fd)
+void	prepare_pipe(t_node *node, int *pipe_fd)
 {
+	(void)node;
 	// if (node->next == NULL)
 	// {
 	// 	return ;
@@ -27,6 +28,10 @@ void	prepare_pipe(int *pipe_fd)
 
 void	prepare_pipe_child(t_node *node, int *pipe_fd, int *prev_fd)
 {
+	// if (node->next == NULL)
+	// {
+	// 	return ;
+	// }
 	// print_before_prepare_pipe_child(node, prev_fd);
 	if (prev_fd[0] != STDIN_FILENO)
 	{
@@ -76,8 +81,13 @@ void	prepare_pipe_child(t_node *node, int *pipe_fd, int *prev_fd)
 	// dprintf(STDERR_FILENO, "close(node->pipe_fd[1]); [%d]\n", node->pipe_fd[1]);
 }
 
-void	prepare_pipe_parent(int *pipe_fd)
+void	prepare_pipe_parent(t_node *node, int *pipe_fd)
 {
+	(void)node;
+	// if (node->next == NULL)
+	// {
+	// 	return ;
+	// }
 	// dprintf(STDERR_FILENO, "===== Parent =====\n");
 	if (pipe_fd[1] != STDOUT_FILENO)
 	{
@@ -86,6 +96,14 @@ void	prepare_pipe_parent(int *pipe_fd)
 			fatal_error("prepare_pipe_parent : close");
 		}
 	}
+	if (pipe_fd[0] != STDIN_FILENO)
+	{
+		if (close(pipe_fd[0]) < 0)
+		{
+			fatal_error("exec_pipeline : close");
+		}
+	}
 	// dprintf(STDERR_FILENO, "close(node->pipe_fd[1]); [%d]\n", node->pipe_fd[1]);
+	// dprintf(STDERR_FILENO, "close(node->pipe_fd[0]); [%d]\n", node->pipe_fd[0]);
 	// dprintf(STDERR_FILENO, "===================\n\n");
 }

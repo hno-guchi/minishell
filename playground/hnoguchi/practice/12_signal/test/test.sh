@@ -49,7 +49,7 @@ assert() {
 	do
 		mv "$arg" "$arg"".cmp"
 	done
-	echo -e -n "$COMMAND" | ./minishell >out 2>&-
+	echo -e -n "$COMMAND" | ./signal >out 2>&-
 	actual=$?
 	for arg in "$@"
 	do

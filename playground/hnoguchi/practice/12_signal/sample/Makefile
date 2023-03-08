@@ -8,6 +8,7 @@ NAME_3 = on_new_line
 NAME_4 = clear_history
 NAME_5 = replace_line
 NAME_6 = rl_signal
+NAME_7 = redirect_signal
 
 CC = cc
 G_FLAGS = -Wall -Wextra -Werror
@@ -18,37 +19,26 @@ LIBRARIES = -lreadline -lhistory
 # General Rules #
 #################
 
-.PHONY: $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6)
+.PHONY: $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7)
 
 $(NAME_1):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) signal.c $(LIBRARIES)
-
 $(NAME_2):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_redisplay.c $(LIBRARIES)
-
 $(NAME_3):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_on_new_line.c $(LIBRARIES)
-
 $(NAME_4):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_clear_history.c $(LIBRARIES)
-
 $(NAME_5):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_replace_line.c $(LIBRARIES)
-
 $(NAME_6):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_signal.c $(LIBRARIES)
+$(NAME_7):
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) simple_redirect.c $(LIBRARIES)
 
 fclean:
-	$(RM) $(NAME_1)
-	$(RM) $(NAME_2)
-	$(RM) $(NAME_3)
-	$(RM) $(NAME_4)
-	$(RM) $(NAME_5)
-	$(RM) -r $(NAME_1).dSYM
-	$(RM) -r $(NAME_2).dSYM
-	$(RM) -r $(NAME_3).dSYM
-	$(RM) -r $(NAME_4).dSYM
-	$(RM) -r $(NAME_5).dSYM
+	$(RM) $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7)
+	$(RM) -r $(NAME_1).dSYM $(NAME_2).dSYM $(NAME_3).dSYM $(NAME_4).dSYM $(NAME_5).dSYM $(NAME_6).dSYM $(NAME_7).dSYM
 
 #########################
 # Platform Compatibilty #

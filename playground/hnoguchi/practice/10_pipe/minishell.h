@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/02/24 13:29:40 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/08 15:27:20 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,12 +130,12 @@ char	*search_path(const char *file_name);
 t_node	*expand(t_node *node);
 
 // pipe.c
-// void	prepare_pipe(t_node *node);
-// void	prepare_pipe_child(t_node *node, int *prev_fd);
-// void	prepare_pipe_parent(t_node *node);
-void	prepare_pipe(int *pipe_fd);
+void	prepare_pipe(t_node *node, int *pipe_fd);
 void	prepare_pipe_child(t_node *node, int *pipe_fd, int *prev_fd);
-void	prepare_pipe_parent(int *pipe_fd);
+void	prepare_pipe_parent(t_node *node, int *pipe_fd);
+// void	prepare_pipe(int *pipe_fd);
+// void	prepare_pipe_child(t_node *node, int *pipe_fd, int *prev_fd);
+// void	prepare_pipe_parent(int *pipe_fd);
 
 // redirect.c
 int		open_redir_file(t_node *node);

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/08 17:54:30 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/08 16:25:27 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,19 +99,41 @@ int	exec_pipeline(t_node *node, int *prev_fd)
 		// child process
 		prepare_pipe_child(node, pipe_fd, prev_fd);
 		redirect_file(node->command);
+		// print_result_open_redir(node->command->redirects->args, "[AFTER] redirect_file();");
 		path = create_path(node->command->args->word);
 		argv = create_argv(path, node->command->args);
+		// print_result_create_argv(argv);
 		execve(path, argv, environ);
 		reset_redirect_command(node->command);
+		// frees_argv(argv);
+		// free(argv);
 		fatal_error("interpret: execve");
 	}
-	// Parent process
-	prepare_pipe_parent(node, pipe_fd);
-	if (node->next != NULL)
-	{
-		// dprintf(STDERR_FILENO, "node->command->args->word : [%s]\n", node->command->args->word);
-		// dprintf(STDERR_FILENO, "return(pid); [%d]\n\n", pid);
-		return (exec_pipeline(node->next, pipe_fd));
+	// else
+	// {
+		// Parent process
+		// print_result_open_redir(node->command->redirects->args, "[BEFORE] prepare_pipe_parent();");
+		prepare_pipe_parent(node, pipe_fd);
+		// print_result_open_redir(node->command->redirects->args, "[AFTER] prepare_pipe_parent();");
+		// if (wait(NULL) < 0)
+		// {
+		// 	fatal_error("prepare_pipe_parent : wait");
+		// }
+		// print_result_open_redir(node->command->redirects->args, "[AFTER] execve();");
+		if (node->next != NULL)
+		{
+			dprintf(STDERR_FILENO, "node->command->args->word : [%s]\n", node->command->args->word);
+			dprintf(STDERR_FILENO, "return(pid); [%d]\n\n", pid);
+			return (exec_pipeline(node->next, pipe_fd));
+			if (pipe_fd[0] != STDIN_FILENO)
+			{
+				if (close(pipe_fd[0]) < 0)
+				{
+					fatal_error("exec_pipeline : close");
+				}
+			}
+		}
+		// exec_pipeline(node->next, pipe_fd);
 		// if (pipe_fd[0] != STDIN_FILENO)
 		// {
 		// 	if (close(pipe_fd[0]) < 0)
@@ -119,7 +141,10 @@ int	exec_pipeline(t_node *node, int *prev_fd)
 		// 		fatal_error("exec_pipeline : close");
 		// 	}
 		// }
-	}	
+		// dprintf(STDERR_FILENO, "close(node->pipe_fd[0]); [%d]\n", node->pipe_fd[0]);
+	// }
+	// dprintf(STDERR_FILENO, "node->command->args->word : [%s]\n", node->command->args->word);
+	// dprintf(STDERR_FILENO, "return(pid); [%d]\n", pid);
 	return (pid);
 }
 

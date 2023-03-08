@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/02/24 14:11:35 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/08 15:04:13 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	main(void)
 	int		status;
 	t_token *token;
 	t_node	*node;
-	char	*line = "/bin/pwd";
+	// char	*line = "/bin/pwd";
+	char	*line = "cat Makefile | grep minishell";
 	// char	*line = "cat print_result_pipe.c";
 	// char	*line = "cat print_result_pipe.c | grep dprintf";
 	// char	*line = "cat print_result_pipe.c | grep dprintf | wc -l";

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/08 09:57:53 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/08 14:37:25 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	main(void)
 	char	*line;
 
 	line = NULL;
-	rl_outstream = stderr;
 	g_minishell.syntax_error = false;
 	initialize_signals();
 	g_minishell.last_status = 0;

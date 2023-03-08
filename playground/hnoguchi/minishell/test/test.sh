@@ -106,6 +106,9 @@ assert "./print_args 'hello world' '42Tokyo'"
 assert "echo 'hello world' '42Tokyo'"
 assert "echo '\"hello world\"' '42Tokyo'"
 ## my
+assert "echo '\"hello world\"' '42Tokyo'I am'kinnikunn!'a'a'a'a'"
+assert "echo '\"hello world\"' '42Tokyo'\"I am\"'\"kinnikunn\"'a'a'a'a'"
+assert "echo '\"hello world\"' '42Tokyo'\"I am\"'\"kinnikunn\"'a'a'a'a"
 assert "echo 'hello world"
 assert "echo hello world'"
 assert "'"
@@ -118,6 +121,7 @@ assert "\""
 assert "echo hello'    world'"
 assert "echo hello'    world  '\"  42tokyo  \""
 # my
+assert "echo \"'hello world'\" \"42Tokyo\"'\"I am\"'\"'kinnikunn!'\"\"a\"a\"a\"a"
 assert "echo \"hello 'world!'\""
 assert "echo 'hello \"42Tokyo!\"'"
 assert "echo 'hello'\"42Tokyo'Bonjour'\""
@@ -150,6 +154,8 @@ assert 'cat <<E"O"F<<eof\nhello\nworld\nEOF\nNOPRINT'
 ## Pipe
 assert 'cat Makefile | grep minishell'
 assert 'cat | cat | ls\n\n'
+assert 'cat Makefile | grep minishell | notcommand'
+assert 'cat Makefile | notcommand | grep minishell'
 assert 'cat <Makefile | grep minishell >f1'
 rm -f f1
 

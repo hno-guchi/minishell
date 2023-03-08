@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/08 09:58:50 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/08 14:00:10 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	read_until_delimiter(t_token *token, int *pipe_fd)
 	char	*line;
 
 	line = NULL;
-	// reset_signal_handler();
+	// signal_default_handler(SIGINT);
 	while (1)
 	{
 		line = readline("> ");
@@ -53,7 +53,6 @@ static void	read_until_delimiter(t_token *token, int *pipe_fd)
 			fatal_error("write");
 		}
 		free(line);
-		line = NULL;
 	}
 	if (line != NULL)
 		free(line);
