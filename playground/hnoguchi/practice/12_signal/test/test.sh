@@ -150,6 +150,11 @@ assert 'cat <<E"O"F<<eof\nhello\nworld\nEOF\nNOPRINT'
 ## Pipe
 assert 'cat Makefile | grep minishell'
 assert 'cat | cat | ls\n\n'
+assert 'cat Makefile | notcommand'
+assert 'cat Makefile | notcommand | cat | ls'
+assert 'cat Makefile | cat | cat | ls '
+assert 'notcommand | notcommand '
+assert 'notcommand | cat Makefile'
 assert 'cat <Makefile | grep minishell >f1'
 rm -f f1
 

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 17:06:30 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/09 11:40:19 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/09 10:03:14 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ typedef struct s_token t_token;
 
 typedef struct	s_token {
 	char	**argv;
+	int		in_pipe[2];
+	int		out_pipe[2];
 	t_token	*next;
 }	t_token;
 
@@ -60,6 +62,10 @@ t_token	*new_token(char **argv)
 
 	new = calloc(1, sizeof(t_token));
 	new->argv = dup_argv(argv);
+	new->in_pipe[0] = STDIN_FILENO;
+	new->in_pipe[1] = -1;
+	new->out_pipe[0] = -1;
+	new->out_pipe[1] = STDOUT_FILENO;
 	return (new);
 }
 
@@ -84,101 +90,18 @@ void	print_result_create_test_token(t_token *token)
 		token = token->next;
 	}
 }
-	/*
-	// case 1
-	char *test_1[] = {
-		"/bin/cat",
-		"Makefile",
-		NULL,
-	};
-	*/
-	/*
-	// case 2
-	char *test_1[] = {
-		"notcommand",
-		NULL,
-	};
-	*/
-	/*
-	// case 3
-	char *test_1[] = {
-		"/bin/cat",
-		"Makefile",
-		NULL,
-	};
-	char *test_2[] = {
-		"/usr/bin/grep",
-		"multi",
-		NULL,
-	};
-	char *test_3[] = {
-		"/usr/bin/wc",
-		"-l",
-		NULL,
-	};
-	*/
-	/*
-	// case 4
-	char *test_1[] = {
-		"notcommand",
-		NULL,
-	};
-	char *test_2[] = {
-		"/bin/cat",
-		"Makefile",
-		NULL,
-	};
-	char *test_3[] = {
-		"/usr/bin/wc",
-		"-l",
-		NULL,
-	};
-	*/
-	/*
-	// case 5
-	char *test_1[] = {
-		"/bin/cat",
-		"Makefile",
-		NULL,
-	};
-	char *test_2[] = {
-		"notcommand",
-		NULL,
-	};
-	char *test_3[] = {
-		"/usr/bin/wc",
-		"-l",
-		NULL,
-	};
-	*/
-	/*
-	// case 6
-	char *test_1[] = {
-		"/bin/cat",
-		"Makefile",
-		NULL,
-	};
-	char *test_2[] = {
-		"/usr/bin/grep",
-		"multi",
-		NULL,
-	};
-	char *test_3[] = {
-		"notcommand",
-		NULL,
-	};
-	*/
+
 t_token	*create_test_token(void)
 {
 	t_token	*token;
-	// case 4
 	char *test_1[] = {
-		"notcommand",
+		"/bin/cat",
+		"Makefile",
 		NULL,
 	};
 	char *test_2[] = {
-		"/bin/cat",
-		"Makefile",
+		"/usr/bin/grep",
+		"multi",
 		NULL,
 	};
 	char *test_3[] = {
@@ -198,96 +121,99 @@ void	fatal_error(const char *message)
 	exit(EXIT_FAILURE);
 }
 
-void	prepare_pipe(t_token *token, int *next_input, int *output)
+void	prepare_pipe(t_token *token)
 {
 	if (token->next == NULL)
 	{
 		return ;
 	}
-	if (pipe(output) < 0)
+	if (pipe(token->out_pipe) < 0)
 	{
 		fatal_error("prepare_pipe ; pipe");
 	}
 	// [process_1] - out_fd -> in_fd - [process_2]
-	next_input[0] = output[0];
-	next_input[1] = output[1];
+	token->next->in_pipe[0] = token->out_pipe[0];
+	token->next->in_pipe[1] = token->out_pipe[1];
 }
 
-void	prepare_pipe_child(int *input, int *output)
+void	prepare_pipe_child(t_token *token)
 {
-	if (0 < output[0])
+	if (0 < token->out_pipe[0])
 	{
-		if (close(output[0]) < 0)
+		if (close(token->out_pipe[0]) < 0)
 		{
 			fatal_error("prepare_pipe_chiled ; close 1");
 		}
 	}
-	if (input[0] != STDIN_FILENO)
-	{
-		if (close(STDIN_FILENO) < 0)
-		{
-			fatal_error("prepare_pipe_chiled ; close 2");
-		}
-		if (dup2(input[0], STDIN_FILENO) < 0)
+	// if (token->in_pipe[0] != STDIN_FILENO)
+	// {
+	// 	if (close(STDIN_FILENO) < 0)
+	// 	{
+	// 		exit(EXIT_FAILURE);
+	// 	}
+		if (dup2(token->in_pipe[0], STDIN_FILENO) < 0)
 		{
 			fatal_error("prepare_pipe_chiled ; dup2 1");
 		}
-		if (close(input[0]) < 0)
+		if (token->in_pipe[0] != STDIN_FILENO)
 		{
-			fatal_error("prepare_pipe_chiled ; close 3");
+			if (close(token->in_pipe[0]) < 0)
+			{
+				fatal_error("prepare_pipe_chiled ; close 2");
+			}
 		}
-	}
-	if (output[1] != STDOUT_FILENO)
-	{
-		if (close(STDOUT_FILENO) < 0)
-		{
-			fatal_error("prepare_pipe_chiled ; close 3");
-		}
-		if (dup2(output[1], STDOUT_FILENO) < 0)
-		{
-			fatal_error("prepare_pipe_chiled ; dup2 2");
-		}
-		if (close(output[1]) < 0)
-		{
-			fatal_error("prepare_pipe_chiled ; close 4");
-		}
-	}
+	// }
+	// if (token->next != NULL)
+	// {
+		// if (token->out_pipe[1] != STDOUT_FILENO)
+		// {
+			// if (close(STDOUT_FILENO) < 0)
+			// {
+			// 	exit(EXIT_FAILURE);
+			// }
+			if (dup2(token->out_pipe[1], STDOUT_FILENO) < 0)
+			{
+				fatal_error("prepare_pipe_chiled ; dup2 2");
+			}
+			if (token->out_pipe[1] != STDOUT_FILENO)
+			{
+				if (close(token->out_pipe[1]) < 0)
+				{
+					fatal_error("prepare_pipe_chiled ; close 3");
+				}
+			}
+		// }
+	// }
 }
 
-void	prepare_pipe_parent(t_token *token, int *input, int *output)
+void	prepare_pipe_parent(t_token *token)
 {
-	if (input[0] != STDIN_FILENO)
+	if (token->in_pipe[0] != STDIN_FILENO)
 	{
-		if (close(input[0]) < 0)
+		if (close(token->in_pipe[0]) < 0)
 		{
 			fatal_error("prepare_pipe_parent ; close 1");
 		}
 	}
 	if (token->next != NULL)
 	{
-		if (close(output[1]) < 0)
+		if (close(token->out_pipe[1]) < 0)
 		{
 			fatal_error("prepare_pipe_parent ; close 2");
 		}
 	}
 }
 
-pid_t	exec_pipeline(t_token *token, int *input_pipe)
+pid_t	exec_pipeline(t_token *token)
 {
 	extern char	**environ;
 	pid_t		pid;
-	int			next_input[2];
-	int			output_pipe[2];
 
 	if (token == NULL)
 	{
 		return (-1);
 	}
-	next_input[0] = STDIN_FILENO;
-	next_input[1] = -1;
-	output_pipe[0] = -1;
-	output_pipe[1] = STDOUT_FILENO;
-	prepare_pipe(token, next_input, output_pipe);
+	prepare_pipe(token);
 	pid = fork();
 	if (pid < 0)
 	{
@@ -296,20 +222,20 @@ pid_t	exec_pipeline(t_token *token, int *input_pipe)
 	else if (pid == 0)
 	{
 		// child process
-		prepare_pipe_child(input_pipe, output_pipe);
+		prepare_pipe_child(token);
 		execve(*(token->argv), token->argv, environ);
 		fatal_error("exec_pipeline ; execve");
 	}
 	// parent process
-	prepare_pipe_parent(token, input_pipe, output_pipe);
+	prepare_pipe_parent(token);
 	if (token->next != NULL)
 	{
-		// dprintf(STDERR_FILENO, "token->argv[%15s] : ", *(token->argv));
-		// dprintf(STDERR_FILENO, "pid[%d]\n", pid);
-		return (exec_pipeline(token->next, next_input));
+		dprintf(STDERR_FILENO, "token->argv[%15s] : ", *(token->argv));
+		dprintf(STDERR_FILENO, "pid[%d]\n", pid);
+		return (exec_pipeline(token->next));
 	}
-	// dprintf(STDERR_FILENO, "token->argv[%15s] : ", *(token->argv));
-	// dprintf(STDERR_FILENO, "pid[%d]\n", pid);
+	dprintf(STDERR_FILENO, "token->argv[%15s] : ", *(token->argv));
+	dprintf(STDERR_FILENO, "pid[%d]\n", pid);
 	return (pid);
 }
 
@@ -340,19 +266,13 @@ int	main(void)
 	int		last_status;
 	pid_t	last_pid;
 	t_token	*token;
-	int		input_pipe[2];
 
 	last_status = 0;
-	input_pipe[0] = STDIN_FILENO;
-	input_pipe[1] = -1;
 	token = create_test_token();
 	// print_result_create_test_token(token);
-	last_pid = exec_pipeline(token, input_pipe);
+	last_pid = exec_pipeline(token);
 	last_status = wait_pipeline(last_pid);
-	// dprintf(STDERR_FILENO, "last_pid    : [%d]\n", last_pid);
-	// dprintf(STDERR_FILENO, "last_status : [%d]\n", last_status);
-	// dprintf(STDOUT_FILENO, "check : STDOUT_FILENO\n");
-	while(1)
-		;
+	dprintf(STDERR_FILENO, "last_pid    : [%d]\n", last_pid);
+	dprintf(STDERR_FILENO, "last_status : [%d]\n", last_status);
 	exit (EXIT_FAILURE);
 }

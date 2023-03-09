@@ -75,12 +75,18 @@ assert() {
 ## Pipe
 assert 'cat Makefile | grep minishell'
 assert 'cat | cat | ls\n\n'
-assert 'cat <Makefile | grep minishell >f1'
 assert 'cat Makefile | notcommand'
-assert 'cat Makefile | notcommand | cat | ls'
-assert 'cat Makefile | cat | cat | ls '
-assert 'notcommand | notcommand '
 assert 'notcommand | cat Makefile'
+assert 'notcommand | notcommand '
+assert 'cat Makefile | grep mini | wc -l'
+assert 'notcommand | cat Makefile | grep mini | wc -l'
+assert 'cat Makefile | notcommand | grep mini | wc -l'
+assert 'cat Makefile | grep mini | notcommand | wc -l'
+assert 'cat Makefile | grep mini | wc -l | notcommand'
+assert 'cat Makefile | cat | cat | ls '
+assert 'cat <Makefile | grep minishell >f1'
+assert 'cat <Makefile | grep minishell | wc -l >>f1'
+# assert 'cat <<EOF | grep minishell | wc -l >>f1'
 rm -f f1
 
 cleanup

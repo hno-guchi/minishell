@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/08 14:54:42 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/09 12:06:38 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	*create_path(char *word)
 	return (path);
 }
 
-static void	do_child(t_node *node, int *pipe_fd, int *prev_fd)
+static void	do_child(t_node *node, int *input, int *output)
 {
 	extern char		**environ;
 	char			**argv;
@@ -85,7 +85,7 @@ static void	do_child(t_node *node, int *pipe_fd, int *prev_fd)
 	argv = NULL;
 	path = NULL;
 	// reset_signals();
-	prepare_pipe_child(node, pipe_fd, prev_fd);
+	prepare_pipe_child(input, output);
 	redirect_file(node->command);
 	path = create_path(node->command->args->word);
 	argv = create_argv(path, node->command->args);
@@ -94,30 +94,28 @@ static void	do_child(t_node *node, int *pipe_fd, int *prev_fd)
 	fatal_error("execve");
 }
 
-int	exec_pipeline(t_node *node, int *prev_fd)
+int	exec_pipeline(t_node *node, int *input_pipe)
 {
 	pid_t			pid;
-	int				pipe_fd[2];
+	int				next_input_pipe[2];
+	int				output_pipe[2];
 
 	if (node == NULL)
 		return (-1);
-	prepare_pipe(pipe_fd);
+	prepare_pipe(node, next_input_pipe, output_pipe);
 	pid = fork();
 	if (pid < 0)
 		fatal_error("fork");
 	else if (pid == 0)
 	{
-		do_child(node, pipe_fd, prev_fd);
+		do_child(node, input_pipe, output_pipe);
 	}
-	else
+	prepare_pipe_parent(node, input_pipe, output_pipe);
+	if (node->next != NULL)
 	{
-		prepare_pipe_parent(pipe_fd);
-		exec_pipeline(node->next, pipe_fd);
-		if (pipe_fd[0] != STDIN_FILENO)
-			if (close(pipe_fd[0]) < 0)
-				assert_error("close");
+		return (exec_pipeline(node->next, next_input_pipe));
 	}
-	dprintf(STDERR_FILENO, "node->command->args->word = [%s];\n", node->command->args->word);
-	dprintf(STDERR_FILENO, "pid = [%d];\n", pid);
+	// dprintf(STDERR_FILENO, "node->command->args->word = [%s];\n", node->command->args->word);
+	// dprintf(STDERR_FILENO, "pid = [%d];\n", pid);
 	return (pid);
 }
