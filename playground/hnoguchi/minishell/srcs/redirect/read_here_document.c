@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/02 16:47:52 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/09 19:34:55 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,15 @@ static void	read_until_delimiter(t_token *token, int *pipe_fd)
 	char	*line;
 
 	line = NULL;
-	reset_signal_handler();
+	g_minishell.readline_interrupted = false;
+	// reset_signal_handler();
 	while (1)
 	{
 		line = readline("> ");
+		dprintf(STDERR_FILENO, "[1]\n");
 		if (is_break(line, token))
 		{
+			dprintf(STDERR_FILENO, "break ;\n");
 			break ;
 		}
 		if (write(pipe_fd[1], line, ft_strlen(line)) < 0)
@@ -67,7 +70,6 @@ int	read_here_document(t_token *token)
 	{
 		fatal_error("pipe");
 	}
-	g_minishell.readline_interrupted = false;
 	read_until_delimiter(token, pipe_fd);
 	if (close(pipe_fd[1]) < 0)
 	{
@@ -79,6 +81,7 @@ int	read_here_document(t_token *token)
 		{
 			fatal_error("close");
 		}
+		dprintf(STDERR_FILENO, "read_here_document: return (-1);\n");
 		return (-1);
 	}
 	token->file_fd = stash_fd(pipe_fd[0]);

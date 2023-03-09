@@ -6,11 +6,13 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 08:39:49 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/08 14:41:46 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/09 19:59:47 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_minishell	g_minishell;
 
 void	initialize_sa(int signal, struct sigaction *sa)
 {
@@ -37,10 +39,9 @@ void	signal_default_handler(int signal)
 void	reset_signals(void)
 {
 	signal_default_handler(SIGINT);
-	signal_default_handler(SIGQUIT);
 }
 
-static int	event(void)
+static int	readline_event_handler(void)
 {
 	return (1);
 }
@@ -51,6 +52,7 @@ void	signal_interrupted_handler(int status)
 	{
 		return ;
 	}
+	g_minishell.readline_interrupted = true;
 	rl_replace_line("", 0);
 	rl_done = 1;
 }
@@ -63,7 +65,7 @@ void	initialize_signals(void)
 	rl_outstream = stderr;
 	if (isatty(STDIN_FILENO))
 	{
-		rl_event_hook = event;
+		rl_event_hook = readline_event_handler;
 	}
 	signal(SIGINT, signal_interrupted_handler);
 }

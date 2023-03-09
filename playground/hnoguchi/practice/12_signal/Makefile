@@ -2,7 +2,7 @@
 # Variables #
 #############
 
-NAME = signal
+NAME = minishell
 CC = cc
 INCLUDES = -I./includes -I./libft/includes
 CFLAGS = -Wall -Wextra -Werror $(INCLUDES)

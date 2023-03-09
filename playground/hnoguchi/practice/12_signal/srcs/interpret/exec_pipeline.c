@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/09 12:06:38 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/09 18:51:16 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,10 @@ static char	*create_path(char *word)
 		{
 			error_message(word, "command not found", 127);
 		}
+		if (access(path, X_OK) != 0)
+		{
+			error_message(word, "command not found", 127);
+		}
 	}
 	return (path);
 }
@@ -84,7 +88,7 @@ static void	do_child(t_node *node, int *input, int *output)
 
 	argv = NULL;
 	path = NULL;
-	// reset_signals();
+	reset_signals();
 	prepare_pipe_child(input, output);
 	redirect_file(node->command);
 	path = create_path(node->command->args->word);

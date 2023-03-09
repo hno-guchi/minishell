@@ -80,6 +80,34 @@ assert ''
 assert '/bin/pwd'
 assert '/bin/echo'
 assert '/bin/ls'
+assert 'bin/ls'
+assert '/ban/pwd'
+assert '/bin/l'
+assert '/binls'
+
+assert '/usr/local/bin/tree'
+assert 'usr/local/bin/tree'
+assert '/usr/loca/bin/tree'
+assert '/usr/local/bin/tre'
+assert '/usr/localbin/tre'
+
+assert '/usr/bin/env'
+assert 'usr/bin/env'
+assert '/us/bin/env'
+assert '/usr/bin/ev'
+assert '/usrbin/env'
+
+assert '/usr/sbin/lpinfo'
+assert 'usr/sbin/lpinfo'
+assert '/usr/sin/lpinfo'
+assert '/usr/sbin/lpifo'
+assert '/usrsbin/lpinfo'
+
+assert '/sbin/ping'
+assert 'sbin/ping'
+assert '/sin/ping'
+assert '/sbin/pig'
+assert '/sbinping'
 
 # 4.Path Filename
 ## Search command path without args
@@ -87,9 +115,14 @@ assert 'pwd'
 assert 'echo'
 assert 'ls'
 assert './a.out'
+assert 'ping'
+assert 'lpinfo'
+assert 'tree'
+
 ## No such command
 assert 'a.out'
 assert 'nosuchfile'
+assert 'eco'
 
 # Tokenizer
 ## Unquoted word
@@ -154,8 +187,11 @@ assert 'cat <<E"O"F<<eof\nhello\nworld\nEOF\nNOPRINT'
 ## Pipe
 assert 'cat Makefile | grep minishell'
 assert 'cat | cat | ls\n\n'
-assert 'cat Makefile | grep minishell | notcommand'
-assert 'cat Makefile | notcommand | grep minishell'
+assert 'cat Makefile | notcommand'
+assert 'cat Makefile | notcommand | cat | ls'
+assert 'cat Makefile | cat | cat | ls '
+assert 'notcommand | notcommand '
+assert 'notcommand | cat Makefile'
 assert 'cat <Makefile | grep minishell >f1'
 rm -f f1
 

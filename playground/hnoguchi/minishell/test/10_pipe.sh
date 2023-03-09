@@ -49,7 +49,7 @@ assert() {
 	do
 		mv "$arg" "$arg"".cmp"
 	done
-	echo -e -n "$COMMAND" | ./minishell >out 2>&-
+	echo -e -n "$COMMAND" | ./signal >out 2>&-
 	actual=$?
 	for arg in "$@"
 	do
@@ -72,42 +72,22 @@ assert() {
 	echo
 }
 
-# Empty line (EOF)
-assert ''
-
-# 3.Path Exec
-## Absolute path commands without args
-assert '/bin/pwd'
-assert '/bin/echo'
-assert '/bin/ls'
-assert 'bin/ls'
-assert '/ban/pwd'
-assert '/bin/l'
-assert '/binls'
-
-assert '/usr/local/bin/tree'
-assert 'usr/local/bin/tree'
-assert '/usr/loca/bin/tree'
-assert '/usr/local/bin/tre'
-assert '/usr/localbin/tre'
-
-assert '/usr/bin/env'
-assert 'usr/bin/env'
-assert '/us/bin/env'
-assert '/usr/bin/ev'
-assert '/usrbin/env'
-
-assert '/usr/sbin/lpinfo'
-assert 'usr/sbin/lpinfo'
-assert '/usr/sin/lpinfo'
-assert '/usr/sbin/lpifo'
-assert '/usrsbin/lpinfo'
-
-assert '/sbin/ping'
-assert 'sbin/ping'
-assert '/sin/ping'
-assert '/sbin/pig'
-assert '/sbinping'
+## Pipe
+assert 'cat Makefile | grep minishell'
+assert 'cat | cat | ls\n\n'
+assert 'cat Makefile | notcommand'
+assert 'notcommand | cat Makefile'
+assert 'notcommand | notcommand '
+assert 'cat Makefile | grep mini | wc -l'
+assert 'notcommand | cat Makefile | grep mini | wc -l'
+assert 'cat Makefile | notcommand | grep mini | wc -l'
+assert 'cat Makefile | grep mini | notcommand | wc -l'
+assert 'cat Makefile | grep mini | wc -l | notcommand'
+assert 'cat Makefile | cat | cat | ls '
+assert 'cat <Makefile | grep minishell >f1'
+assert 'cat <Makefile | grep minishell | wc -l >>f1'
+# assert 'cat <<EOF | grep minishell | wc -l >>f1'
+rm -f f1
 
 cleanup
 # echo 'all OK'

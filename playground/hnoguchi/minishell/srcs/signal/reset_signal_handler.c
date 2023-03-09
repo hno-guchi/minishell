@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 18:21:42 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/02 16:43:25 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/09 19:28:48 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static void	default_signal_handler(int signal_number)
 {
 	struct sigaction	sa;
 
-	ft_memset(&sa, 0, sizeof(struct sigaction));
-	sa.sa_flags = 0;
+	// ft_memset(&sa, 0, sizeof(struct sigaction));
+	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = SIG_DFL;
 	sa_initialize(signal_number, &sa);
 }
@@ -25,5 +25,5 @@ static void	default_signal_handler(int signal_number)
 void	reset_signal_handler(void)
 {
 	default_signal_handler(SIGINT);
-	default_signal_handler(SIGQUIT);
+	// default_signal_handler(SIGQUIT);
 }

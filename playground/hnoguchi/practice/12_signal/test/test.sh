@@ -49,7 +49,7 @@ assert() {
 	do
 		mv "$arg" "$arg"".cmp"
 	done
-	echo -e -n "$COMMAND" | ./signal >out 2>&-
+	echo -e -n "$COMMAND" | ./minishell >out 2>&-
 	actual=$?
 	for arg in "$@"
 	do
@@ -80,6 +80,34 @@ assert ''
 assert '/bin/pwd'
 assert '/bin/echo'
 assert '/bin/ls'
+assert 'bin/ls'
+assert '/ban/pwd'
+assert '/bin/l'
+assert '/binls'
+
+assert '/usr/local/bin/tree'
+assert 'usr/local/bin/tree'
+assert '/usr/loca/bin/tree'
+assert '/usr/local/bin/tre'
+assert '/usr/localbin/tre'
+
+assert '/usr/bin/env'
+assert 'usr/bin/env'
+assert '/us/bin/env'
+assert '/usr/bin/ev'
+assert '/usrbin/env'
+
+assert '/usr/sbin/lpinfo'
+assert 'usr/sbin/lpinfo'
+assert '/usr/sin/lpinfo'
+assert '/usr/sbin/lpifo'
+assert '/usrsbin/lpinfo'
+
+assert '/sbin/ping'
+assert 'sbin/ping'
+assert '/sin/ping'
+assert '/sbin/pig'
+assert '/sbinping'
 
 # 4.Path Filename
 ## Search command path without args
@@ -87,9 +115,14 @@ assert 'pwd'
 assert 'echo'
 assert 'ls'
 assert './a.out'
+assert 'ping'
+assert 'lpinfo'
+assert 'tree'
+
 ## No such command
 assert 'a.out'
 assert 'nosuchfile'
+assert 'eco'
 
 # Tokenizer
 ## Unquoted word
@@ -106,6 +139,9 @@ assert "./print_args 'hello world' '42Tokyo'"
 assert "echo 'hello world' '42Tokyo'"
 assert "echo '\"hello world\"' '42Tokyo'"
 ## my
+assert "echo '\"hello world\"' '42Tokyo'I am'kinnikunn!'a'a'a'a'"
+assert "echo '\"hello world\"' '42Tokyo'\"I am\"'\"kinnikunn\"'a'a'a'a'"
+assert "echo '\"hello world\"' '42Tokyo'\"I am\"'\"kinnikunn\"'a'a'a'a"
 assert "echo 'hello world"
 assert "echo hello world'"
 assert "'"
@@ -118,6 +154,7 @@ assert "\""
 assert "echo hello'    world'"
 assert "echo hello'    world  '\"  42tokyo  \""
 # my
+assert "echo \"'hello world'\" \"42Tokyo\"'\"I am\"'\"'kinnikunn!'\"\"a\"a\"a\"a"
 assert "echo \"hello 'world!'\""
 assert "echo 'hello \"42Tokyo!\"'"
 assert "echo 'hello'\"42Tokyo'Bonjour'\""

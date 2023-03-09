@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/08 14:00:10 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/09 19:38:20 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	read_until_delimiter(t_token *token, int *pipe_fd)
 	char	*line;
 
 	line = NULL;
-	// signal_default_handler(SIGINT);
+	g_minishell.readline_interrupted = false;
 	while (1)
 	{
 		line = readline("> ");
@@ -66,7 +66,6 @@ int	read_here_document(t_token *token)
 	{
 		fatal_error("pipe");
 	}
-	g_minishell.readline_interrupted = false;
 	read_until_delimiter(token, pipe_fd);
 	if (close(pipe_fd[1]) < 0)
 	{

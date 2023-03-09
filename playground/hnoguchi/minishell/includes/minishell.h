@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/02 17:23:48 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/09 14:16:00 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,9 @@ int		read_here_document(t_token *token);
 void	reset_redirect_command(t_node *command);
 
 // pipe.c
-void	prepare_pipe(int *pipe_fd);
-void	prepare_pipe_child(t_node *node, int *pipe_fd, int *prev_fd);
-void	prepare_pipe_parent(int *pipe_fd);
+void	prepare_pipe(t_node *node, int *next_input, int *output);
+void	prepare_pipe_parent(t_node *node, int *input, int *output);
+void	prepare_pipe_child(int *input, int *output);
 
 // interpret.c
 int		interpret(t_node *node);

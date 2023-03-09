@@ -1,5 +1,12 @@
 #!/bin/bash
 
+RED="\033[31m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+RESET="\033[0m"
+OK=$GREEN"OK"$RESET
+NG=$RED"NG"$RESET
+
 cat <<EOF | gcc -xc -o a.out -
 #include <stdio.h>
 int	main()
@@ -19,25 +26,49 @@ int	main(int argc, char *argv[])
 }
 EOF
 
+cat <<EOF | gcc -xc -o exit42 -
+int main() { return 42; }
+EOF
+
+print_desc() {
+	echo -e $YELLOW"$1"$RESET
+}
+
 cleanup() {
-	rm -f cmp out a.out print_args
+	rm -f cmp out a.out print_args exit42 infinite_loop
 }
 
 assert() {
-	printf '%-50s:' "[$1]"
+	COMMAND="$1"
+	shift
+	printf '%-50s:' "[$COMMAND]"
 	# exit status
-	echo -n -e "$1" | bash >cmp 2>&-
+	echo -e -n "$COMMAND" | bash >cmp 2>&-
 	expected=$?
-	echo -n -e "$1" | ./minishell >out 2>&-
+	for arg in "$@"
+	do
+		mv "$arg" "$arg"".cmp"
+	done
+	echo -e -n "$COMMAND" | ./minishell >out 2>&-
 	actual=$?
+	for arg in "$@"
+	do
+		mv "$arg" "$arg"".out"
+	done
 
-	diff cmp out >/dev/null && echo -n '	diff OK' || echo -n '	diff NG'
+	diff cmp out >/dev/null && echo -e -n "	diff $OK" || echo -e -n "	diff $NG"
 
 	if [ "$actual" = "$expected" ]; then
-		echo -n '	status OK'
+		echo -e -n "	status $OK"
 	else
-		echo -n "	status NG, expected $expected but got $actual"
+		echo -e -n "	status $NG, expected $expected but got $actual"
 	fi
+	for arg in "$@"
+	do
+		echo -n "	[$arg] "
+		diff "$arg"".cmp" "$arg"".out" >/dev/null && echo -e -n "$OK" || echo -e -n "$NG"
+		rm -f "$arg"".cmp" "$arg"".out"
+	done
 	echo
 }
 
@@ -47,9 +78,14 @@ assert 'pwd'
 assert 'echo'
 assert 'ls'
 assert './a.out'
+assert 'ping'
+assert 'lpinfo'
+assert 'tree'
+
 ## No such command
 assert 'a.out'
 assert 'nosuchfile'
+assert 'eco'
 
 cleanup
-echo 'all OK'
+# echo 'all OK'

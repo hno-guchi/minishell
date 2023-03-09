@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/08 14:37:25 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/09 20:12:58 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,12 @@ void	execute_command(char *line)
 		node = expand(node);
 		if (open_redir_file(node) < 0)
 		{
-			exit (ERROR_OPEN_REDIR);
+			g_minishell.last_status = ERROR_OPEN_REDIR;
 		}
-		g_minishell.last_status = interpret(node);
+		else
+		{
+			g_minishell.last_status = interpret(node);
+		}
 		closes_redirect_file(node);
 		list_frees_node(node);
 	}
