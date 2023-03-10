@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/09 11:16:44 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:19:46 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ int	interpret(t_node *node)
 	status = 0;
 	input_pipe[0] = STDIN_FILENO;
 	input_pipe[1] = -1;
+	// signal_exec_command();
 	last_pid = exec_pipeline(node, input_pipe);
-	// dprintf(STDERR_FILENO, "last_pid = [%d];\n", last_pid);
 	status = wait_pipeline(last_pid);
+	// dprintf(STDERR_FILENO, "last_pid = [%d];\n", last_pid);
 	return (status);
 }

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 12:31:36 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 15:16:48 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static char	*create_path(char *word)
 	return (path);
 }
 
-static void	do_child(t_node *node, int *input, int *output)
+static void	do_child(t_node *node)
 {
 	extern char		**environ;
 	char			**argv;
@@ -88,8 +88,6 @@ static void	do_child(t_node *node, int *input, int *output)
 
 	argv = NULL;
 	path = NULL;
-	reset_signals();
-	prepare_pipe_child(input, output);
 	redirect_file(node->command);
 	path = create_path(node->command->args->word);
 	argv = create_argv(path, node->command->args);
@@ -112,14 +110,14 @@ int	exec_pipeline(t_node *node, int *input_pipe)
 		fatal_error("fork");
 	else if (pid == 0)
 	{
-		do_child(node, input_pipe, output_pipe);
+		reset_signals();
+		prepare_pipe_child(input_pipe, output_pipe);
+		do_child(node);
 	}
 	prepare_pipe_parent(node, input_pipe, output_pipe);
 	if (node->next != NULL)
 	{
 		return (exec_pipeline(node->next, next_input_pipe));
 	}
-	// dprintf(STDERR_FILENO, "node->command->args->word = [%s];\n", node->command->args->word);
-	// dprintf(STDERR_FILENO, "pid = [%d];\n", pid);
 	return (pid);
 }

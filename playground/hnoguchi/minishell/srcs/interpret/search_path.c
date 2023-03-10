@@ -6,11 +6,10 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:20 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/09 18:07:22 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 15:39:17 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <limits.h>
 #include "minishell.h"
 
 static void	create_path(char *target, const char *file_name, char *env_path,

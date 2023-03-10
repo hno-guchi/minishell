@@ -6,13 +6,11 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 10:05:18 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 15:39:43 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_minishell	g_minishell;
 
 static bool	is_break(char *line, t_token *token)
 {

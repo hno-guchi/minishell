@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/09 14:16:00 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 20:55:33 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <errno.h>
 # include <unistd.h>
 # include <signal.h>
+# include <limits.h>
 
 # define ERROR_TOKENIZE 258
 # define ERROR_PARSE 258
@@ -98,7 +99,7 @@ void	fatal_error(const char *message) __attribute__((noreturn));
 void	error_message(const char *location, const char *message,
 			int status) __attribute__((noreturn));
 void	assert_error(const char *message) __attribute__((noreturn));
-void	tokenize_error(char *location, char **rest, char *line);
+void	tokenize_error(char *location, char **rest, char *line, char last_c);
 void	parse_error(const char *location, t_token **rest, t_token *token);
 void	xperror(const char *location);
 

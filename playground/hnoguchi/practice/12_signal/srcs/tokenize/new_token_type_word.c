@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/05 16:38:38 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 13:59:51 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	increment_until_quote(char **rest, char *line, char quote)
 	{
 		if (*line == '\0')
 		{
-			return (error_unclose_quote(rest, line, quote));
+			return (error_unclose_quote(rest, line - 1, quote));
 		}
 		line++;
 	}

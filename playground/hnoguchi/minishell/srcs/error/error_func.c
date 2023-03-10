@@ -6,20 +6,18 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/02 17:31:13 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 20:55:18 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_minishell	g_minishell;
-
-void	tokenize_error(char *location, char **rest, char *line)
+void	tokenize_error(char *location, char **rest, char *line, char last_c)
 {
 	g_minishell.syntax_error = true;
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd("syntax error near unexpected character `", STDERR_FILENO);
-	ft_putchar_fd(*line, STDERR_FILENO);
+	ft_putchar_fd(last_c, STDERR_FILENO);
 	ft_putstr_fd("' in ", STDERR_FILENO);
 	ft_putstr_fd(location, STDERR_FILENO);
 	ft_putchar_fd('\n', STDERR_FILENO);

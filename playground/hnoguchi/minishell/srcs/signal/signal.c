@@ -6,13 +6,11 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 18:21:42 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 09:57:00 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 15:40:35 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_minishell	g_minishell;
 
 static void	ignore_signal_handler(int signal_number)
 {

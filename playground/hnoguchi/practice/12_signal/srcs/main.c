@@ -6,13 +6,13 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 11:29:38 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 20:30:30 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_minishell	g_minishell;
+t_minishell	g_minishell = {};
 
 void	execute_command(char *line)
 {
@@ -23,7 +23,10 @@ void	execute_command(char *line)
 	node = NULL;
 	token = tokenize(line);
 	if (token->kind == TK_EOF)
+	{
+		// dprintf(STDERR_FILENO, "token->kind == EOF\n");
 		;
+	}
 	else if (g_minishell.syntax_error == true)
 	{
 		g_minishell.last_status = ERROR_TOKENIZE;
@@ -39,11 +42,16 @@ void	execute_command(char *line)
 		else
 		{
 			g_minishell.last_status = interpret(node);
+			// dprintf(STDERR_FILENO, "[1] : interpret\n");
+			// dprintf(STDERR_FILENO, "last_status : [%d]\n", g_minishell.last_status);
 		}
 		closes_redirect_file(node);
+		// dprintf(STDERR_FILENO, "[2] ; close_redirect_file\n");
 		list_frees_node(node);
+		// dprintf(STDERR_FILENO, "[3] ; list_frees_node\n");
 	}
 	list_frees_token(token);
+	// dprintf(STDERR_FILENO, "[4] ; list_frees_token\n");
 }
 
 int	main(void)
@@ -52,11 +60,11 @@ int	main(void)
 
 	line = NULL;
 	initialize_signals();
-	g_minishell.syntax_error = false;
 	g_minishell.last_status = 0;
 	while (1)
 	{
 		line = readline("minishell$ ");
+		// dprintf(STDERR_FILENO, "[0] ; readline\n");
 		if (line == NULL)
 		{
 			break ;

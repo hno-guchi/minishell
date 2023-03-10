@@ -6,13 +6,11 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/02 17:31:13 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 15:22:12 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_minishell	g_minishell;
 
 void	tokenize_error(char *location, char **rest, char *line)
 {

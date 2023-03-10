@@ -6,13 +6,11 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 08:39:49 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 12:28:46 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 15:18:06 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_minishell	g_minishell;
 
 void	initialize_sa(int signal, struct sigaction *sa)
 {
@@ -60,10 +58,6 @@ static int	readline_event_handler(void)
 
 void	signal_interrupted_handler(int status)
 {
-	if (status != SIGINT)
-	{
-		return ;
-	}
 	g_minishell.sig = status;
 }
 
@@ -73,7 +67,7 @@ static void	signal_interrupted_receiver(int signal)
 
 	ft_memset(&sa, 0, sizeof(struct sigaction));
 	sa.sa_handler = signal_interrupted_handler;
-	sa.sa_flags = SA_SIGINFO;
+	sa.sa_flags = 0;
 	initialize_sa(signal, &sa);
 }
 

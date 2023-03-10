@@ -164,6 +164,7 @@ assert "echo '\"'Hello'\",' '\"\"'This is a \"'pen'\""
 ## Redirecting output
 assert 'echo hello >hello.txt' 'hello.txt'
 assert 'echo hello >f1>f2>f3' 'f1' 'f2' 'f3'
+assert 'echo hello >f>f>f' 'f'
 
 ## Redirecting input
 assert 'cat <Makefile'
@@ -171,7 +172,7 @@ echo hello>f1
 echo world>f2
 echo 42Tokyo>f3
 assert 'cat <f1<f2<f3'
-rm -f f1 f2 f3
+rm -f f f1 f2 f3
 assert 'cat <hoge'
 
 ## Appending Redirecting output

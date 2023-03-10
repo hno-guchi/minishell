@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/05 16:38:38 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 20:57:58 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,33 @@ static bool	is_break(char c)
 	return (false);
 }
 
-static void	error_unclose_quote(char **rest, char *line, char quote)
+static void	error_unclose_quote(char **rest, char *line, char quote,
+		char last_c)
 {
 	if (quote == SINGLE_QUOTE_CHAR)
 	{
-		tokenize_error("Unclosed single quote", rest, line);
+		tokenize_error("Unclosed single quote", rest, line, last_c);
 	}
 	else if (quote == DOUBLE_QUOTE_CHAR)
 	{
-		tokenize_error("Unclosed double quote", rest, line);
+		tokenize_error("Unclosed double quote", rest, line, last_c);
 	}
 	return ;
 }
 
 static void	increment_until_quote(char **rest, char *line, char quote)
 {
+	char	last_character;
+
+	last_character = *line;
 	line++;
 	while (*line != quote)
 	{
 		if (*line == '\0')
 		{
-			return (error_unclose_quote(rest, line, quote));
+			return (error_unclose_quote(rest, line, quote, last_character));
 		}
+		last_character = *line;
 		line++;
 	}
 	if (*line == quote)
@@ -80,6 +85,6 @@ t_token	*new_token_type_word(char **rest, char *line)
 		*rest = line;
 		return (new_token(TK_WORD, word));
 	}
-	tokenize_error("Unexpected Token", &line, line);
+	tokenize_error("Unexpected Token", &line, line, *line);
 	return (NULL);
 }
