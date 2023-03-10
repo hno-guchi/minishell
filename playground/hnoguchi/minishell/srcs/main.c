@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/09 19:19:10 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 09:58:08 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	execute_command(char *line)
 		node = expand(node);
 		if (open_redir_file(node) < 0)
 		{
-			dprintf(STDERR_FILENO, "ERROR_OPEN_REDIR;\n");
+			// dprintf(STDERR_FILENO, "ERROR_OPEN_REDIR;\n");
 			g_minishell.last_status = ERROR_OPEN_REDIR;
 		}
 		else
@@ -43,10 +43,10 @@ void	execute_command(char *line)
 		}
 		closes_redirect_file(node);
 		list_frees_node(node);
-		dprintf(STDERR_FILENO, "close, list_free\n");
+		// dprintf(STDERR_FILENO, "close, list_free\n");
 	}
 	list_frees_token(token);
-	dprintf(STDERR_FILENO, "list_free_token\n");
+	// dprintf(STDERR_FILENO, "list_free_token\n");
 }
 
 int	main(void)

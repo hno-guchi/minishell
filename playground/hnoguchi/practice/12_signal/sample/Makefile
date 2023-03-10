@@ -8,7 +8,7 @@ NAME_3 = on_new_line
 NAME_4 = clear_history
 NAME_5 = replace_line
 NAME_6 = rl_signal
-NAME_7 = redirect_signal
+NAME_7 = sigint_in_heredoc
 
 CC = cc
 G_FLAGS = -Wall -Wextra -Werror
@@ -34,7 +34,7 @@ $(NAME_5):
 $(NAME_6):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_signal.c $(LIBRARIES)
 $(NAME_7):
-	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) simple_redirect.c $(LIBRARIES)
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sigint_in_here_document.c $(LIBRARIES)
 
 fclean:
 	$(RM) $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7)

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 08:39:49 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/09 19:59:47 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 12:28:46 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	signal_default_handler(int signal)
 	struct sigaction	sa;
 
 	ft_memset(&sa, 0, sizeof(struct sigaction));
-	sa.sa_flags = 0;
 	sa.sa_handler = SIG_DFL;
+	sa.sa_flags = SA_RESTART;
 	initialize_sa(signal, &sa);
 }
 
@@ -43,7 +43,19 @@ void	reset_signals(void)
 
 static int	readline_event_handler(void)
 {
-	return (1);
+	if (g_minishell.sig == 0)
+	{
+		return (0);
+	}
+	else if (g_minishell.sig == SIGINT)
+	{
+		g_minishell.sig = 0;
+		g_minishell.readline_interrupted = true;
+		rl_replace_line("", 0);
+		rl_done = 1;
+		return (0);
+	}
+	return (0);
 }
 
 void	signal_interrupted_handler(int status)
@@ -52,9 +64,17 @@ void	signal_interrupted_handler(int status)
 	{
 		return ;
 	}
-	g_minishell.readline_interrupted = true;
-	rl_replace_line("", 0);
-	rl_done = 1;
+	g_minishell.sig = status;
+}
+
+static void	signal_interrupted_receiver(int signal)
+{
+	struct sigaction	sa;
+
+	ft_memset(&sa, 0, sizeof(struct sigaction));
+	sa.sa_handler = signal_interrupted_handler;
+	sa.sa_flags = SA_SIGINFO;
+	initialize_sa(signal, &sa);
 }
 
 void	initialize_signals(void)
@@ -67,7 +87,7 @@ void	initialize_signals(void)
 	{
 		rl_event_hook = readline_event_handler;
 	}
-	signal(SIGINT, signal_interrupted_handler);
+	signal_interrupted_receiver(SIGINT);
 }
 
 /*

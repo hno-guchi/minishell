@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/09 19:19:11 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 10:05:59 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static int	open_redir_in(t_token *token)
 				token = token->next;
 				if (read_here_document(token) < 0)
 				{
-					dprintf(STDERR_FILENO, "open_redir_in: return (-1);\n");
 					return (-1);
 				}
 			}

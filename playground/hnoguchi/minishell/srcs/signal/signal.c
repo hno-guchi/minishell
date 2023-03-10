@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 18:21:42 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/02 16:44:05 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 09:57:00 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_minishell	g_minishell;
 
-void	ignore_signal_handler(int signal_number)
+static void	ignore_signal_handler(int signal_number)
 {
 	struct sigaction	sa;
 
@@ -24,7 +24,7 @@ void	ignore_signal_handler(int signal_number)
 	sa_initialize(signal_number, &sa);
 }
 
-void	sigint_signal_handler(int signal_number, siginfo_t *info,
+static void	signal_interrupted_handler(int signal_number, siginfo_t *info,
 		void *ucontext_ap)
 {
 	(void)info;
@@ -35,7 +35,7 @@ void	sigint_signal_handler(int signal_number, siginfo_t *info,
 	}
 }
 
-void	sigint_signal_receiver(void handler(int, siginfo_t *, void *))
+static void	signal_interrupted_receiver(void handler(int, siginfo_t *, void *))
 {
 	struct sigaction	sa;
 
@@ -56,5 +56,5 @@ void	setup_signals(void)
 		rl_event_hook = check_signal;
 	}
 	ignore_signal_handler(SIGQUIT);
-	sigint_signal_receiver(sigint_signal_handler);
+	signal_interrupted_receiver(signal_interrupted_handler);
 }

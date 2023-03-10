@@ -6,11 +6,24 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/02 16:23:49 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 10:02:59 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static bool	is_close(t_token *args)
+{
+	if (args->kind != TK_WORD)
+	{
+		return (false);
+	}
+	if (args->file_fd < 0)
+	{
+		return (false);
+	}
+	return (true);
+}
 
 static void	closes_file(t_token *args)
 {
@@ -20,12 +33,14 @@ static void	closes_file(t_token *args)
 	}
 	while (args != NULL)
 	{
-		if (args->kind == TK_WORD)
+		if (!is_close(args))
 		{
-			if (close(args->file_fd) < 0)
-			{
-				assert_error("close");
-			}
+			args = args->next;
+			continue ;
+		}
+		if (close(args->file_fd) < 0)
+		{
+			assert_error("close");
 		}
 		args = args->next;
 	}

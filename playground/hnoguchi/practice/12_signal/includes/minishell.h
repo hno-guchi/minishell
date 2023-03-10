@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/09 11:57:45 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/10 11:50:30 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct s_node {
 
 // signal.c
 void	signal_interrupted_handler(int status);
-void	signal_default_handler(int signal);
+// void	signal_default_handler(int signal);
 void	initialize_signals(void);
 void	reset_signals(void);
 // int		check_signal(void);
