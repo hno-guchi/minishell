@@ -24,7 +24,7 @@
  * DESCRIPTION
  * The wait() function suspends execution of its calling process until [stat_loc] information is available for a terminated child process, or a signal is received.
  * On return from a successful wait() call,
- * the [stat_loc] area contains termination information abaut the process that exited as defined below.
+ * the [stat_loc] area contains termination information about the process that exited as defined below.
  *
  *
  * pid_t	wait4(pid_t pid, int *stat_loc, int options, struct rusage *rusage);

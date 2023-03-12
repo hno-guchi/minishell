@@ -9,6 +9,8 @@ NAME_4 = clear_history
 NAME_5 = replace_line
 NAME_6 = rl_signal
 NAME_7 = sigint_in_heredoc
+NAME_8 = sigint_in_child_process
+NAME_9 = sample_wait
 
 CC = cc
 G_FLAGS = -Wall -Wextra -Werror
@@ -19,7 +21,7 @@ LIBRARIES = -lreadline -lhistory
 # General Rules #
 #################
 
-.PHONY: $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7)
+.PHONY: $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7) $(NAME_8) $(NAME_9)
 
 $(NAME_1):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) signal.c $(LIBRARIES)
@@ -35,10 +37,14 @@ $(NAME_6):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) rl_signal.c $(LIBRARIES)
 $(NAME_7):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sigint_in_here_document.c $(LIBRARIES)
+$(NAME_8):
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sigint_in_child_process.c $(LIBRARIES)
+$(NAME_9):
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sample_wait.c $(LIBRARIES)
 
 fclean:
-	$(RM) $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7)
-	$(RM) -r $(NAME_1).dSYM $(NAME_2).dSYM $(NAME_3).dSYM $(NAME_4).dSYM $(NAME_5).dSYM $(NAME_6).dSYM $(NAME_7).dSYM
+	$(RM) $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7) $(NAME_8) $(NAME_9)
+	$(RM) -r $(NAME_1).dSYM $(NAME_2).dSYM $(NAME_3).dSYM $(NAME_4).dSYM $(NAME_5).dSYM $(NAME_6).dSYM $(name_7).dSYM $(NAME_8).dSYM $(NAME_9).dSYM
 
 #########################
 # Platform Compatibilty #
