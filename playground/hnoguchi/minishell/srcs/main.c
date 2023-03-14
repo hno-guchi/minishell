@@ -51,9 +51,9 @@ int	main(void)
 	char	*line;
 
 	line = NULL;
+	initialize_signals();
 	rl_outstream = stderr;
 	g_minishell.syntax_error = false;
-	setup_signals();
 	g_minishell.last_status = 0;
 	while (1)
 	{
@@ -68,6 +68,7 @@ int	main(void)
 		}
 		execute_command(line);
 		free(line);
+		set_signals_receiver();
 	}
 	exit (g_minishell.last_status);
 }

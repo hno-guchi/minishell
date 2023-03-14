@@ -9,8 +9,8 @@ NAME_4 = clear_history
 NAME_5 = replace_line
 NAME_6 = rl_signal
 NAME_7 = sigint_in_heredoc
-NAME_8 = sigint_in_child_process
-NAME_9 = sample_wait
+NAME_8 = sigint_in_single_blocking
+NAME_9 = sigint_in_multi_blocking
 
 CC = cc
 G_FLAGS = -Wall -Wextra -Werror
@@ -38,6 +38,7 @@ $(NAME_6):
 $(NAME_7):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sigint_in_here_document.c $(LIBRARIES)
 $(NAME_8):
+<<<<<<< HEAD
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sigint_in_child_process.c $(LIBRARIES)
 $(NAME_9):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sample_wait.c $(LIBRARIES)
@@ -45,6 +46,15 @@ $(NAME_9):
 fclean:
 	$(RM) $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7) $(NAME_8) $(NAME_9)
 	$(RM) -r $(NAME_1).dSYM $(NAME_2).dSYM $(NAME_3).dSYM $(NAME_4).dSYM $(NAME_5).dSYM $(NAME_6).dSYM $(name_7).dSYM $(NAME_8).dSYM $(NAME_9).dSYM
+=======
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sigint_in_single_blocking.c $(LIBRARIES)
+$(NAME_9):
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sigint_in_multi_blocking.c $(LIBRARIES)
+
+fclean:
+	$(RM) $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7) $(NAME_8) $(NAME_9)
+	$(RM) -r $(NAME_1).dSYM $(NAME_2).dSYM $(NAME_3).dSYM $(NAME_4).dSYM $(NAME_5).dSYM $(NAME_6).dSYM $(NAME_7).dSYM $(NAME_8).dSYM $(NAME_9).dSYM
+>>>>>>> develop
 
 #########################
 # Platform Compatibilty #

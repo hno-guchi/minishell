@@ -10,7 +10,7 @@ LIBRARIES = -lreadline -lhistory -lft -L./libft
 G_ADDRESS_FLAGS = -g -fsanitize=address
 SRCS = main.c \
 	   error_func.c xperror.c \
-	   signal.c sa_initialize.c check_signal.c reset_signal_handler.c \
+	   initialize_sa.c initialize_signals.c set_signals_default.c set_signals_ignore.c set_signals_receiver.c \
 	   destructor.c \
 	   tokenize.c new_token.c new_token_type_word.c new_token_type_operator.c\
 	   expand.c is_func.c add_character.c try_remove_quote.c append_func.c \

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 20:55:33 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/14 19:53:29 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,13 @@ typedef struct s_node {
 }	t_node;
 
 // signal.c
-void	setup_signals(void);
-void	reset_signal_handler(void);
-int		check_signal(void);
-void	sa_initialize(int signal_number, struct sigaction *sa);
+void	initialize_sa(int signal, struct sigaction *sa);
+void	initialize_signals(void);
+void	set_signals_receiver(void);
+void	set_signals_default(void);
+void	signal_default_handler(int signal);
+void	set_signals_ignore(void);
+void	signal_ignore_handler(int signal);
 
 // error_func.c
 void	fatal_error(const char *message) __attribute__((noreturn));
@@ -147,8 +150,8 @@ void	reset_redirect_command(t_node *command);
 
 // pipe.c
 void	prepare_pipe(t_node *node, int *next_input, int *output);
-void	prepare_pipe_parent(t_node *node, int *input, int *output);
 void	prepare_pipe_child(int *input, int *output);
+void	prepare_pipe_parent(t_node *node, int *input, int *output);
 
 // interpret.c
 int		interpret(t_node *node);

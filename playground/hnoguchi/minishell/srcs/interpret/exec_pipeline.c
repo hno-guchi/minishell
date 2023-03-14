@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/09 18:42:49 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/14 17:48:41 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static char	*create_path(char *word)
 	return (path);
 }
 
-static void	do_child(t_node *node, int *input, int *output)
+static void	do_child(t_node *node)
 {
 	extern char		**environ;
 	char			**argv;
@@ -88,8 +88,6 @@ static void	do_child(t_node *node, int *input, int *output)
 
 	argv = NULL;
 	path = NULL;
-	reset_signal_handler();
-	prepare_pipe_child(input, output);
 	redirect_file(node->command);
 	path = create_path(node->command->args->word);
 	argv = create_argv(path, node->command->args);
@@ -112,8 +110,11 @@ int	exec_pipeline(t_node *node, int *input_pipe)
 		fatal_error("fork");
 	else if (pid == 0)
 	{
-		do_child(node, input_pipe, output_pipe);
+		set_signals_default();
+		prepare_pipe_child(input_pipe, output_pipe);
+		do_child(node);
 	}
+	set_signals_ignore();
 	prepare_pipe_parent(node, input_pipe, output_pipe);
 	if (node->next != NULL)
 	{
