@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 15:16:48 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:56:52 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,11 @@ int	exec_pipeline(t_node *node, int *input_pipe)
 		fatal_error("fork");
 	else if (pid == 0)
 	{
-		reset_signals();
+		set_signals_default();
 		prepare_pipe_child(input_pipe, output_pipe);
 		do_child(node);
 	}
+	set_signals_ignore();
 	prepare_pipe_parent(node, input_pipe, output_pipe);
 	if (node->next != NULL)
 	{

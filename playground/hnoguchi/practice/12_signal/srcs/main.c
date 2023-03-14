@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 20:30:30 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:05:03 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	main(void)
 		}
 		execute_command(line);
 		free(line);
+		set_signals_receiver();
 	}
 	exit (g_minishell.last_status);
 }

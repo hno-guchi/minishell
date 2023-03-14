@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sample_wait.c                                      :+:      :+:    :+:   */
+/*   sigint_in_single_blocking.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 16:45:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/12 20:04:08 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/14 13:27:03 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,24 @@ static void	fatal_error(const char *message)
 	exit(EXIT_FAILURE);
 }
 
-static void	signal_default(int signal)
+static void	set_signal_ignore(int signal)
+{
+	struct sigaction	sa;
+
+	memset(&sa, 0, sizeof(struct sigaction));
+	sa.sa_flags = 0;
+	sa.sa_handler = SIG_IGN;
+	if (sigemptyset(&sa.sa_mask) == -1)
+	{
+		fatal_error("sigemptyset");
+	}
+	if (sigaction(signal, &sa, NULL) == -1)
+	{
+		fatal_error("sigaction");
+	}
+}
+
+static void	set_signal_default(int signal)
 {
 	struct sigaction	sa;
 
@@ -56,10 +73,11 @@ static pid_t	exec(void)
 	}
 	else if (pid == 0)
 	{
-		signal_default(SIGINT);
+		set_signal_default(SIGINT);
 		execve(path, argv, environ);
 		fatal_error("execve");
 	}
+	set_signal_ignore(SIGINT);
 	return (pid);
 }
 
@@ -109,23 +127,6 @@ static int	wait_pid(pid_t last_pid)
 	return (status);
 }
 
-static void	signal_ignore(int signal)
-{
-	struct sigaction	sa;
-
-	memset(&sa, 0, sizeof(struct sigaction));
-	sa.sa_flags = 0;
-	sa.sa_handler = SIG_IGN;
-	if (sigemptyset(&sa.sa_mask) == -1)
-	{
-		fatal_error("sigemptyset");
-	}
-	if (sigaction(signal, &sa, NULL) == -1)
-	{
-		fatal_error("sigaction");
-	}
-}
-
 int	main(void)
 {
 	pid_t	last_pid;
@@ -133,7 +134,6 @@ int	main(void)
 
 	while (1)
 	{
-		signal_ignore(SIGINT);
 		last_pid = exec();
 		status = wait_pid(last_pid);
 	}

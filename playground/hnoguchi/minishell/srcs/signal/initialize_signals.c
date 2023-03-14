@@ -1,43 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   initialize_signals.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 08:39:49 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 15:18:06 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/14 17:33:58 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	initialize_sa(int signal, struct sigaction *sa)
-{
-	if (sigemptyset(&sa->sa_mask) == -1)
-	{
-		fatal_error("sigemptyset");
-	}
-	if (sigaction(signal, sa, NULL) == -1)
-	{
-		fatal_error("sigaction");
-	}
-}
-
-void	signal_default_handler(int signal)
-{
-	struct sigaction	sa;
-
-	ft_memset(&sa, 0, sizeof(struct sigaction));
-	sa.sa_handler = SIG_DFL;
-	sa.sa_flags = SA_RESTART;
-	initialize_sa(signal, &sa);
-}
-
-void	reset_signals(void)
-{
-	signal_default_handler(SIGINT);
-}
 
 static int	readline_event_handler(void)
 {
@@ -56,21 +29,6 @@ static int	readline_event_handler(void)
 	return (0);
 }
 
-void	signal_interrupted_handler(int status)
-{
-	g_minishell.sig = status;
-}
-
-static void	signal_interrupted_receiver(int signal)
-{
-	struct sigaction	sa;
-
-	ft_memset(&sa, 0, sizeof(struct sigaction));
-	sa.sa_handler = signal_interrupted_handler;
-	sa.sa_flags = 0;
-	initialize_sa(signal, &sa);
-}
-
 void	initialize_signals(void)
 {
 	extern int	_rl_echo_control_chars;
@@ -81,7 +39,8 @@ void	initialize_signals(void)
 	{
 		rl_event_hook = readline_event_handler;
 	}
-	signal_interrupted_receiver(SIGINT);
+	set_signals_receiver();
+	signal_ignore_handler(SIGQUIT);
 }
 
 /*
