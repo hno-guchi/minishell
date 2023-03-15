@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 20:57:58 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/15 19:56:40 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ static void	error_unclose_quote(char **rest, char *line, char quote,
 {
 	if (quote == SINGLE_QUOTE_CHAR)
 	{
-		tokenize_error("Unclosed single quote", rest, line, last_c);
+		tokenize_error(last_c, rest, line);
 	}
 	else if (quote == DOUBLE_QUOTE_CHAR)
 	{
-		tokenize_error("Unclosed double quote", rest, line, last_c);
+		tokenize_error(last_c, rest, line);
 	}
 	return ;
 }
@@ -85,6 +85,6 @@ t_token	*new_token_type_word(char **rest, char *line)
 		*rest = line;
 		return (new_token(TK_WORD, word));
 	}
-	tokenize_error("Unexpected Token", &line, line, *line);
+	tokenize_error(*line, &line, line);
 	return (NULL);
 }

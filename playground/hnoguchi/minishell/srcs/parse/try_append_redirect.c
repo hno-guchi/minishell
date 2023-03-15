@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:49:18 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/02 15:34:18 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/15 17:36:43 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ static void	try_append_output(t_node *node, t_token **rest, t_token *token)
 	{
 		if (token->next->word == NULL)
 		{
-			fatal_error("parse : token->word == NULL");
+			parse_error("newline", &token, token);
+			*rest = token;
+			return ;
 		}
 		append_redirects(&node->redirects, token_dup(token), NODE_REDIR_OUT);
 		token = token->next;
@@ -26,7 +28,7 @@ static void	try_append_output(t_node *node, t_token **rest, t_token *token)
 	}
 	else
 	{
-		fatal_error("parse : token->next->kind != TK_WORD;");
+		parse_error("newline", &token, token);
 	}
 	*rest = token;
 }
@@ -37,7 +39,9 @@ static void	try_append_input(t_node *node, t_token **rest, t_token *token)
 	{
 		if (token->next->word == NULL)
 		{
-			fatal_error("parse : token->word == NULL");
+			parse_error("newline", &token, token);
+			*rest = token;
+			return ;
 		}
 		append_redirects(&node->redirects, token_dup(token), NODE_REDIR_IN);
 		token = token->next;
@@ -45,7 +49,7 @@ static void	try_append_input(t_node *node, t_token **rest, t_token *token)
 	}
 	else
 	{
-		fatal_error("parse : token->next->kind != TK_WORD;");
+		parse_error("newline", &token, token);
 	}
 	*rest = token;
 }
@@ -57,7 +61,9 @@ static void	try_append_append_output(t_node *node, t_token **rest,
 	{
 		if (token->next->word == NULL)
 		{
-			fatal_error("parse : token->word == NULL");
+			parse_error("newline", &token, token);
+			*rest = token;
+			return ;
 		}
 		append_redirects(&node->redirects, token_dup(token), NODE_REDIR_OUT);
 		token = token->next;
@@ -65,7 +71,7 @@ static void	try_append_append_output(t_node *node, t_token **rest,
 	}
 	else
 	{
-		fatal_error("parse : token->next->kind != TK_WORD;");
+		parse_error("newline", &token, token);
 	}
 	*rest = token;
 }
@@ -77,7 +83,9 @@ static void	try_append_here_document(t_node *node, t_token **rest,
 	{
 		if (token->next->word == NULL)
 		{
-			fatal_error("parse : token->word == NULL");
+			parse_error("newline", &token, token);
+			*rest = token;
+			return ;
 		}
 		append_redirects(&node->redirects, token_dup(token), NODE_REDIR_IN);
 		token = token->next;
@@ -85,7 +93,7 @@ static void	try_append_here_document(t_node *node, t_token **rest,
 	}
 	else
 	{
-		fatal_error("parse : token->next->kind != TK_WORD;");
+		parse_error("newline", &token, token);
 	}
 	*rest = token;
 }

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:55 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/02 15:14:26 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/15 20:41:30 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,11 @@ static void	remove_double_quote(char **new_word, char **rest,
 	while (*current_word != quote)
 	{
 		if (*current_word == '\0')
-		{
 			fatal_error("Unclosed quote");
-		}
 		else if (is_variable(current_word))
-		{
 			append_variable(new_word, &current_word, current_word);
-		}
 		else if (is_special_parameter(current_word))
-		{
 			append_special_param(new_word, &current_word, current_word);
-		}
 		else
 		{
 			add_character(new_word, *current_word);
@@ -60,8 +54,20 @@ static void	remove_double_quote(char **new_word, char **rest,
 	*rest = current_word;
 }
 
+static void	exception_only_quote_word(char **new_word)
+{
+	*new_word = ft_strdup("");
+	if (*new_word == NULL)
+		fatal_error("ft_strdup");
+}
+
 static void	do_remove_quote(char **new_word, char *current_word)
 {
+	if (ft_strcmp(current_word, "\"\"") == 0
+		|| ft_strcmp(current_word, "''") == 0)
+	{
+		return (exception_only_quote_word(new_word));
+	}
 	while (*current_word != '\0')
 	{
 		if (*current_word == SINGLE_QUOTE_CHAR)
@@ -97,9 +103,7 @@ void	try_remove_quote(t_token *token)
 			continue ;
 		}
 		if (token->word == NULL)
-		{
 			fatal_error("token->word is NULL");
-		}
 		do_remove_quote(&new_word, token->word);
 		free(token->word);
 		token->word = new_word;
