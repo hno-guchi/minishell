@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/14 17:47:41 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/15 17:56:15 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,6 @@ t_token	*new_token_type_operator(char **rest, char *line)
 		}
 		i += 1;
 	}
-	tokenize_error("Unexpected Token", &line, line, *line);
+	tokenize_error(*line, &line, line);
 	return (NULL);
 }

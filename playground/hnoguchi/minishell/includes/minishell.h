@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/14 19:53:29 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/15 17:57:01 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	fatal_error(const char *message) __attribute__((noreturn));
 void	error_message(const char *location, const char *message,
 			int status) __attribute__((noreturn));
 void	assert_error(const char *message) __attribute__((noreturn));
-void	tokenize_error(char *location, char **rest, char *line, char last_c);
+void	tokenize_error(char location, char **rest, char *line);
 void	parse_error(const char *location, t_token **rest, t_token *token);
 void	xperror(const char *location);
 

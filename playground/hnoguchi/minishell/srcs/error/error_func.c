@@ -6,21 +6,19 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 20:55:18 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/15 17:39:45 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	tokenize_error(char *location, char **rest, char *line, char last_c)
+void	tokenize_error(char location, char **rest, char *line)
 {
 	g_minishell.syntax_error = true;
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd("syntax error near unexpected character `", STDERR_FILENO);
-	ft_putchar_fd(last_c, STDERR_FILENO);
-	ft_putstr_fd("' in ", STDERR_FILENO);
-	ft_putstr_fd(location, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
+	ft_putchar_fd(location, STDERR_FILENO);
+	ft_putstr_fd("'\n", STDERR_FILENO);
 	while (*line != '\0')
 	{
 		line++;
@@ -33,10 +31,8 @@ void	parse_error(const char *location, t_token **rest, t_token *token)
 	g_minishell.syntax_error = true;
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
-	ft_putstr_fd(token->word, STDERR_FILENO);
-	ft_putstr_fd("' in ", STDERR_FILENO);
 	ft_putstr_fd(location, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
+	ft_putstr_fd("'\n", STDERR_FILENO);
 	while (token && !at_eof(token->kind))
 	{
 		token = token->next;
