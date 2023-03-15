@@ -11,6 +11,7 @@ NAME_6 = rl_signal
 NAME_7 = sigint_in_heredoc
 NAME_8 = sigint_in_single_blocking
 NAME_9 = sigint_in_multi_blocking
+NAME_10 = ctrl_d_in_readline
 
 CC = cc
 G_FLAGS = -Wall -Wextra -Werror
@@ -21,7 +22,7 @@ LIBRARIES = -lreadline -lhistory
 # General Rules #
 #################
 
-.PHONY: $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7) $(NAME_8) $(NAME_9)
+.PHONY: $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7) $(NAME_8) $(NAME_9) $(NAME_10)
 
 $(NAME_1):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) signal.c $(LIBRARIES)
@@ -41,10 +42,12 @@ $(NAME_8):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sigint_in_single_blocking.c $(LIBRARIES)
 $(NAME_9):
 	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) sigint_in_multi_blocking.c $(LIBRARIES)
+$(NAME_10):
+	$(CC) -o $@ $(G_FLAGS) $(INCLUDES) ctrl_d_in_readline.c $(LIBRARIES)
 
 fclean:
-	$(RM) $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7) $(NAME_8) $(NAME_9)
-	$(RM) -r $(NAME_1).dSYM $(NAME_2).dSYM $(NAME_3).dSYM $(NAME_4).dSYM $(NAME_5).dSYM $(NAME_6).dSYM $(NAME_7).dSYM $(NAME_8).dSYM $(NAME_9).dSYM
+	$(RM) $(NAME_1) $(NAME_2) $(NAME_3) $(NAME_4) $(NAME_5) $(NAME_6) $(NAME_7) $(NAME_8) $(NAME_9) $(NAME_10)
+	$(RM) -r $(NAME_1).dSYM $(NAME_2).dSYM $(NAME_3).dSYM $(NAME_4).dSYM $(NAME_5).dSYM $(NAME_6).dSYM $(NAME_7).dSYM $(NAME_8).dSYM $(NAME_9).dSYM $(NAME_10).dSYM
 
 #########################
 # Platform Compatibilty #

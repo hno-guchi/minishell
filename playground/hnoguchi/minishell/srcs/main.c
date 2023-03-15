@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 20:33:08 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/14 20:11:52 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,15 @@ void	execute_command(char *line)
 	if (token->kind == TK_EOF)
 		;
 	else if (g_minishell.syntax_error == true)
-	{
 		g_minishell.last_status = ERROR_TOKENIZE;
-	}
 	else
 	{
 		node = parse(token);
 		node = expand(node);
 		if (open_redir_file(node) < 0)
-		{
 			g_minishell.last_status = ERROR_OPEN_REDIR;
-		}
 		else
-		{
 			g_minishell.last_status = interpret(node);
-		}
 		closes_redirect_file(node);
 		list_frees_node(node);
 	}

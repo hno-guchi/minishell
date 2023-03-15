@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/14 16:05:03 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/15 12:42:17 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,24 @@ void	execute_command(char *line)
 	// dprintf(STDERR_FILENO, "[4] ; list_frees_token\n");
 }
 
+static bool	is_break(char *line)
+{
+	if (line != NULL)
+	{
+		return (false);
+	}
+	if (RL_ISSTATE(RL_STATE_EOF))
+	{
+		return (true);
+	}
+	else
+	{
+		g_minishell.last_status = 1;
+		return (true);
+	}
+	return (false);
+}
+
 int	main(void)
 {
 	char	*line;
@@ -64,8 +82,7 @@ int	main(void)
 	while (1)
 	{
 		line = readline("minishell$ ");
-		// dprintf(STDERR_FILENO, "[0] ; readline\n");
-		if (line == NULL)
+		if (is_break(line))
 		{
 			break ;
 		}
@@ -76,6 +93,10 @@ int	main(void)
 		execute_command(line);
 		free(line);
 		set_signals_receiver();
+	}
+	if (RL_ISSTATE(RL_STATE_EOF))
+	{
+		ft_putstr_fd("logout\n", STDERR_FILENO);
 	}
 	exit (g_minishell.last_status);
 }
