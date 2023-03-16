@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:49:18 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/15 20:53:31 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/16 19:07:24 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_node	*parse_simple_command(t_token **rest, t_token *token)
 				try_append_redirect(node, &token, token);
 		}
 		else
-			parse_error(token->word, &token, token);
+			parse_error(&token, token);
 		if (g_minishell.syntax_error == true)
 			break ;
 		token = token->next;
@@ -89,7 +89,7 @@ static t_node	*try_create_new_node(t_token *token)
 			return (node);
 		}
 		else
-			parse_error(token->word, &token, token);
+			parse_error(&token, token);
 	}
 	return (NULL);
 }
@@ -101,7 +101,7 @@ t_node	*parse(t_token *token)
 
 	if (token->kind != TK_WORD)
 	{
-		parse_error(token->word, &token, token);
+		parse_error(&token, token);
 		return (NULL);
 	}
 	node = new_node(NODE_PIPELINE);

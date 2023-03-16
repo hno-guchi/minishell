@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 07:19:25 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 12:35:25 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:28:38 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,33 @@ t_item	*new_item(char *name, char *value)
 			fatal_error("strdup");
 	}
 	return (new);
+}
+
+char	*get_map_value(const char *name)
+{
+	char	*dup_value;
+	t_item	*item;
+
+	dup_value = NULL;
+	item = g_minishell.env->head_p;
+	if (name == NULL)
+		return (NULL);
+	while (item->next != NULL)
+	{
+		if (ft_strcmp(item->next->name, name) == 0)
+		{
+			if (item->next->value == NULL)
+			{
+				return (NULL);
+			}
+			dup_value = ft_strdup(item->next->value);
+			if (dup_value == NULL)
+			{
+				fatal_error("strdup");
+			}
+			return (dup_value);
+		}
+		item = item->next;
+	}
+	return (NULL);
 }

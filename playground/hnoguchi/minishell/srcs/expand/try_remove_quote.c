@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:55 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/15 20:41:30 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/16 18:44:13 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ static void	exception_only_quote_word(char **new_word)
 {
 	*new_word = ft_strdup("");
 	if (*new_word == NULL)
+	{
 		fatal_error("ft_strdup");
+	}
 }
 
 static void	do_remove_quote(char **new_word, char *current_word)

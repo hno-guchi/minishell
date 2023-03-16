@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 07:19:25 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 12:07:17 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:15:04 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,42 @@ static void	print_env_map()
 	printf("===============================\n");
 }
 
+int	main(void)
+{
+	char	*get_value;
+
+	get_value = NULL;
+	initialize_set_env_map();
+
+	get_value = get_map_value("PATH");
+	printf("get_value : PATH : [%s]\n", get_value);
+	free(get_value);
+
+	get_value = get_map_value("USER");
+	printf("get_value : USER : [%s]\n", get_value);
+	free(get_value);
+
+	get_value = get_map_value("NOT");
+	printf("get_value : NOT  : [%s]\n", get_value);
+	free(get_value);
+
+	get_value = get_map_value("");
+	printf("get_value : \"\"   : [%s]\n", get_value);
+	free(get_value);
+
+	get_value = get_map_value(NULL);
+	printf("get_value : NULL : [%s]\n", get_value);
+	free(get_value);
+
+	print_env_map();
+	frees_map();
+	// system("leaks -q minishell");
+	exit(EXIT_SUCCESS);
+}
+
+/*
+// TEST initialize_set_env_map();
+// TEST minishell_env();
 static void	print_minishell_env(char **env)
 {
 	// size_t	i;
@@ -64,7 +100,7 @@ int	main(void)
 	system("leaks -q minishell");
 	exit(EXIT_SUCCESS);
 }
-
+*/
 /*
 // TEST new_map(); new_item();
 int	main(void)

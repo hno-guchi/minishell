@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 07:19:25 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 11:56:18 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:03:46 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_environ	*g_env;
 void		fatal_error(const char *message);
 t_environ	*new_map(void);
 t_item		*new_item(char *name, char *value);
+char		*get_map_value(const char *name);
 void		frees_item(t_item *item);
 void		frees_map(void);
 void		frees_env(char **env);
