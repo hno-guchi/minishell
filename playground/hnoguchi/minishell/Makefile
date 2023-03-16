@@ -68,6 +68,7 @@ clean:
 fclean:
 	$(RM) -r $(OBJS_DIR)
 	$(RM) $(NAME)
+	$(RM) test_overflow
 	make fclean -C $(LIBFT_DIR)
 
 re: fclean all
@@ -80,7 +81,7 @@ test: all
 test_overflow: all
 	$(CC) $(G_ADDRESS_FLAGS) -o $@ $(OBJS) $(LIBRARIES)
 
-.PHONY: all clean fclean re bonus test libft
+.PHONY: all clean fclean re bonus test libft test_overflow
 
 #########################
 # Platform Compatibilty #

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:55 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/02 15:27:24 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:52:58 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ static void	append_num(char **new_word, unsigned int num)
 	add_character(new_word, '0' + (num % 10));
 }
 
+static void	do_append_variable(char **new_word, char *value)
+{
+	while (*value != '\0')
+	{
+		add_character(new_word, *value);
+		value++;
+	}
+}
+
 void	append_variable(char **new_word, char **rest, char *current_word)
 {
 	char	*value;
@@ -39,20 +48,19 @@ void	append_variable(char **new_word, char **rest, char *current_word)
 		add_character(&variable_name, *current_word);
 		current_word++;
 		if (*current_word == '\0')
+		{
 			break ;
+		}
 	}
 	*rest = current_word;
-	value = getenv(variable_name);
+	value = get_map_value(variable_name);
 	free(variable_name);
 	if (value == NULL)
 	{
 		return ;
 	}
-	while (*value != '\0')
-	{
-		add_character(new_word, *value);
-		value++;
-	}
+	do_append_variable(new_word, value);
+	free(value);
 }
 
 void	append_special_param(char **new_word, char **rest,

@@ -6,51 +6,62 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:20 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/10 15:39:17 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/16 17:10:50 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	create_path(char *target, const char *file_name, char *env_path,
+static void	create_path(char *target, const char *file_name, char *path_env,
 		char *tail_p)
 {
 	if (tail_p != NULL)
 	{
-		ft_strncpy(target, env_path, tail_p - env_path);
+		ft_strncpy(target, path_env, tail_p - path_env);
 	}
 	else
 	{
-		ft_strlcpy(target, env_path, PATH_MAX);
+		ft_strlcpy(target, path_env, PATH_MAX);
 	}
 	ft_strlcat(target, "/", PATH_MAX);
 	ft_strlcat(target, file_name, PATH_MAX);
 }
 
-char	*search_path(const char *file_name)
+static char	*do_search(char *path_env, const char *file_name)
 {
-	char	*env_path;
+	char	*path_exec_file;
 	char	*tail_p;
 	char	target[PATH_MAX];
-	char	*dup;
 
-	dup = NULL;
-	env_path = getenv("PATH");
-	while (env_path)
+	path_exec_file = NULL;
+	while (path_env != NULL)
 	{
 		ft_bzero(target, PATH_MAX);
-		tail_p = ft_strchr(env_path, ':');
-		create_path(target, file_name, env_path, tail_p);
+		tail_p = ft_strchr(path_env, ':');
+		create_path(target, file_name, path_env, tail_p);
 		if (access(target, X_OK) == 0)
 		{
-			dup = ft_strdup(target);
-			if (dup == NULL)
+			path_exec_file = ft_strdup(target);
+			if (path_exec_file == NULL)
+			{
 				fatal_error("strdup");
-			return (dup);
+			}
+			return (path_exec_file);
 		}
 		if (tail_p == NULL)
 			return (NULL);
-		env_path = tail_p + 1;
+		path_env = tail_p + 1;
 	}
 	return (NULL);
+}
+
+char	*search_path(const char *file_name)
+{
+	char	*path_env;
+	char	*path_exec_file;
+
+	path_env = get_map_value("PATH");
+	path_exec_file = do_search(path_env, file_name);
+	free(path_env);
+	return (path_exec_file);
 }
