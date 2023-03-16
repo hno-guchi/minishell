@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/14 17:48:41 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/16 12:51:15 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,20 @@ static char	*create_path(char *word)
 
 static void	do_child(t_node *node)
 {
-	extern char		**environ;
+	char			**env;
 	char			**argv;
 	char			*path;
 
 	argv = NULL;
 	path = NULL;
 	redirect_file(node->command);
+	env = create_env();
 	path = create_path(node->command->args->word);
 	argv = create_argv(path, node->command->args);
-	execve(path, argv, environ);
+	execve(path, argv, env);
 	reset_redirect_command(node->command);
+	frees_env(env);
+	frees_argv(argv);
 	fatal_error("execve");
 }
 
