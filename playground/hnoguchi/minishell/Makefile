@@ -9,15 +9,16 @@ CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
 LIBRARIES = -lreadline -lhistory -lft -L./libft
 G_ADDRESS_FLAGS = -g -fsanitize=address
 SRCS = main.c \
+	   utils_map.c create_env.c destructors_map.c initialize_set_env_map.c \
 	   error_func.c xperror.c \
-	   initialize_sa.c initialize_signals.c set_signals_default.c set_signals_ignore.c set_signals_receiver.c \
-	   destructor.c \
-	   tokenize.c new_token.c new_token_type_word.c new_token_type_operator.c\
 	   expand.c is_func.c add_character.c try_remove_quote.c append_func.c \
+	   interpret.c search_path.c exec_pipeline.c \
 	   parse.c new_node.c at_eof.c list_add_back.c append_args.c append_redirects.c try_append_redirect.c \
-	   redirect.c stash_fd.c open_redir_file.c read_here_document.c closes_redirect_file.c reset_redirect_command.c \
 	   pipe.c \
-	   interpret.c search_path.c exec_pipeline.c
+	   redirect.c stash_fd.c open_redir_file.c read_here_document.c closes_redirect_file.c reset_redirect_command.c \
+	   initialize_sa.c initialize_signals.c set_signals_default.c set_signals_ignore.c set_signals_receiver.c \
+	   tokenize.c new_token.c new_token_type_word.c new_token_type_operator.c\
+	   destructor.c
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
 SRCS_DIR = ./srcs
 OBJS_DIR = ./objs
@@ -36,6 +37,8 @@ $(NAME): $(OBJS_DIR) $(OBJS)
 $(OBJS_DIR):
 	mkdir -p $@
 
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/environ/%.c
+	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/error/%.c

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/15 18:30:46 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/16 12:41:12 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,21 @@ static bool	is_break(char *line)
 	return (false);
 }
 
+static void	initialize_minishell(void)
+{
+	initialize_set_env_map();
+	initialize_signals();
+	rl_outstream = stderr;
+	g_minishell.syntax_error = false;
+	g_minishell.last_status = 0;
+}
+
 int	main(void)
 {
 	char	*line;
 
 	line = NULL;
-	initialize_signals();
-	rl_outstream = stderr;
-	g_minishell.syntax_error = false;
-	g_minishell.last_status = 0;
+	initialize_minishell();
 	while (1)
 	{
 		line = readline("minishell$ ");
@@ -102,6 +108,9 @@ int	main(void)
 		set_signals_receiver();
 	}
 	if (RL_ISSTATE(RL_STATE_EOF))
+	{
 		ft_putstr_fd("logout\n", STDERR_FILENO);
+	}
+	frees_map();
 	exit (g_minishell.last_status);
 }
