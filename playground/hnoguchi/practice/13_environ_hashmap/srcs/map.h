@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 07:19:25 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 16:03:46 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/17 19:00:29 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void		fatal_error(const char *message);
 t_environ	*new_map(void);
 t_item		*new_item(char *name, char *value);
 char		*get_map_value(const char *name);
+int			put_map(const char *string);
+int			set_map(const char *name, const char *value);
+int			unset_map(const char *name);
 void		frees_item(t_item *item);
 void		frees_map(void);
 void		frees_env(char **env);

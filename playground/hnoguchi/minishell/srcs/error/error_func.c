@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 19:15:41 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/17 14:27:26 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	parse_error(t_token **rest, t_token *token)
 	g_minishell.syntax_error = true;
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
-	if (token->next != NULL && token->next->word != NULL)
+	if (token != NULL && token->word != NULL)
 	{
-		ft_putstr_fd(token->next->word, STDERR_FILENO);
+		ft_putstr_fd(token->word, STDERR_FILENO);
 	}
 	else
 	{

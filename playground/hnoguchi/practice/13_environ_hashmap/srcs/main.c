@@ -6,13 +6,19 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 07:19:25 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 16:15:04 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/17 19:35:19 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "map.h"
 
 t_environ	*g_env;
+
+void	fatal_error(const char *message)
+{
+	dprintf(STDERR_FILENO, "%s\n", message);
+	exit(EXIT_FAILURE);
+}
 
 static void	print_env_map()
 {
@@ -33,6 +39,38 @@ static void	print_env_map()
 	printf("===============================\n");
 }
 
+// TEST put_map(); set_map(); unset_map();
+int	main(void)
+{
+	initialize_set_env_map();
+
+	put_map("TEST1=value1");
+	put_map("TEST2=value2");
+	put_map("TEST3=value3");
+	put_map("TEST4=value4");
+	put_map("TEST5=value5");
+	put_map("TEST6=value6");
+	put_map("TEST7=value7");
+	put_map("TEST8=value8");
+	put_map("not_equol");
+	put_map("not_value=");
+
+	unset_map("TEST1");
+	unset_map("TEST3");
+	unset_map("TEST7");
+	unset_map("TEST8");
+	unset_map("not_equol");
+	unset_map("not_value");
+	unset_map("NOT_NAME");
+
+	print_env_map();
+	frees_map();
+	// system("leaks -q minishell");
+	exit(EXIT_SUCCESS);
+}
+
+/*
+// TEST get_map_value();
 int	main(void)
 {
 	char	*get_value;
@@ -65,6 +103,7 @@ int	main(void)
 	// system("leaks -q minishell");
 	exit(EXIT_SUCCESS);
 }
+*/
 
 /*
 // TEST initialize_set_env_map();

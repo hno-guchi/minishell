@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:49:18 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 18:54:44 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/17 14:31:41 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	try_append_output(t_node *node, t_token **rest, t_token *token)
 	}
 	else
 	{
-		parse_error(&token, token);
+		parse_error(&token, token->next);
 	}
 	*rest = token;
 }
@@ -49,7 +49,7 @@ static void	try_append_input(t_node *node, t_token **rest, t_token *token)
 	}
 	else
 	{
-		parse_error(&token, token);
+		parse_error(&token, token->next);
 	}
 	*rest = token;
 }
@@ -71,7 +71,7 @@ static void	try_append_append_output(t_node *node, t_token **rest,
 	}
 	else
 	{
-		parse_error(&token, token);
+		parse_error(&token, token->next);
 	}
 	*rest = token;
 }
@@ -93,7 +93,7 @@ static void	try_append_here_document(t_node *node, t_token **rest,
 	}
 	else
 	{
-		parse_error(&token, token);
+		parse_error(&token, token->next);
 	}
 	*rest = token;
 }

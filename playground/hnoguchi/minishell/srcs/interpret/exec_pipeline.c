@@ -6,79 +6,11 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 12:51:15 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/17 16:35:46 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	count_token_word(size_t *size, t_token *token)
-{
-	while (token != NULL)
-	{
-		if (token->word != NULL)
-		{
-			*size += 1;
-		}
-		token = token->next;
-	}
-}
-
-static char	**create_argv(char *path, t_token *token)
-{
-	char	**argv;
-	size_t	i;
-	size_t	size;
-	t_token	*head_p;
-
-	i = 1;
-	size = 0;
-	head_p = token->next;
-	count_token_word(&size, token);
-	token = head_p;
-	argv = ft_calloc(size + 1, sizeof(char *));
-	if (argv == NULL)
-		fatal_error("calloc");
-	argv[0] = path;
-	while (token != NULL)
-	{
-		if (token->word != NULL)
-		{
-			argv[i] = ft_strdup(token->word);
-			i += 1;
-		}
-		token = token->next;
-	}
-	return (argv);
-}
-
-static char	*create_path(char *word)
-{
-	char	*path;
-
-	path = NULL;
-	if (ft_strchr(word, '/') == NULL)
-	{
-		path = search_path(word);
-		if (path == NULL)
-		{
-			error_message(word, "command not found", 127);
-		}
-	}
-	else
-	{
-		path = ft_strdup(word);
-		if (path == NULL)
-		{
-			error_message(word, "command not found", 127);
-		}
-		if (access(path, X_OK) != 0)
-		{
-			error_message(word, "command not found", 127);
-		}
-	}
-	return (path);
-}
 
 static void	do_child(t_node *node)
 {
@@ -86,6 +18,7 @@ static void	do_child(t_node *node)
 	char			**argv;
 	char			*path;
 
+	env = NULL;
 	argv = NULL;
 	path = NULL;
 	redirect_file(node->command);
@@ -115,6 +48,16 @@ int	exec_pipeline(t_node *node, int *input_pipe)
 	{
 		set_signals_default();
 		prepare_pipe_child(input_pipe, output_pipe);
+		/*
+		 * if (is_builtin(node->command->args->word))
+		 * {
+		 * 	exit(exec_builtin(node));
+		 * }
+		 * else
+		 * {
+		 * 	do_child(node);
+		 * }
+		 */
 		do_child(node);
 	}
 	set_signals_ignore();
