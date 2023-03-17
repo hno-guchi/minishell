@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 07:19:25 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 16:28:38 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/17 19:45:23 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,29 @@ char	*get_map_value(const char *name)
 		item = item->next;
 	}
 	return (NULL);
+}
+
+int	unset_map(const char *name)
+{
+	t_item	*prev_item;
+	t_item	*target_item;
+
+	if (name == NULL)
+	{
+		return (1);
+	}
+	prev_item = g_minishell.env->head_p;
+	target_item = g_minishell.env->head_p->next;
+	while (target_item != NULL)
+	{
+		if (ft_strcmp(target_item->name, name) == 0)
+		{
+			prev_item->next = target_item->next;
+			frees_item(target_item);
+			return (0);
+		}
+		prev_item = target_item;
+		target_item = target_item->next;
+	}
+	return (1);
 }

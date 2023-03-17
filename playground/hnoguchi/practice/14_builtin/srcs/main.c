@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   interpret.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/17 19:49:52 by hnoguchi         ###   ########.fr       */
+/*   Created: 2023/03/17 15:17:15 by hnoguchi          #+#    #+#             */
+/*   Updated: 2023/03/17 15:41:13 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+// #include <stdlib.h>
+#include "libft.h"
+#include <stdbool.h>
+#include <stdio.h>
+
+static void	fatal_error(const char *message)
+{
+	dprintf(STDERR_FILENO, "%s\n", message);
+	exit(EXIT_FAILURE);
+}
 
 static bool	is_builtin(const char *command)
 {
@@ -35,23 +44,19 @@ static bool	is_builtin(const char *command)
 	return (false);
 }
 
-int	interpret(t_node *node)
+int	main(int argc, char **argv)
 {
-	int		status;
-	int		input_pipe[2];
-	pid_t	last_pid;
-
-	status = 0;
-	input_pipe[0] = STDIN_FILENO;
-	input_pipe[1] = -1;
-	if (node->next == NULL && is_builtin(node->command->args->word))
+	if (argc != 2)
 	{
-		status = exec_builtin(node);
+		fatal_error("Please argument. [builtin command]");
+	}
+	if (is_builtin(argv[1]))
+	{
+		printf("[%s] is builtin command.\n", argv[1]);
 	}
 	else
 	{
-		last_pid = exec_pipeline(node, input_pipe);
-		status = wait_pipeline(last_pid);
+		printf("[%s] is not builtin command.\n", argv[1]);
 	}
-	return (status);
+	exit(EXIT_SUCCESS);
 }

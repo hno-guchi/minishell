@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 20:37:23 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/17 19:44:25 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ struct s_environ {
 t_environ	*new_map(void);
 t_item		*new_item(char *name, char *value);
 char		*get_map_value(const char *name);
+int			set_map(const char *name, const char *value);
+int			put_map(const char *string);
+int			unset_map(const char *name);
 void		frees_item(t_item *item);
 void		frees_map(void);
 void		frees_env(char **env);
@@ -119,6 +122,7 @@ void		assert_error(const char *message) __attribute__((noreturn));
 void		tokenize_error(char location, char **rest, char *line);
 void		parse_error(t_token **rest, t_token *token);
 void		xperror(const char *location);
+void		error_number_message(const char *word, int num);
 
 // expand dir
 t_node		*expand(t_node *node);
@@ -133,8 +137,11 @@ void		append_special_param(char **new_word, char **rest,
 
 // interpret dir
 int			interpret(t_node *node);
-char		*search_path(const char *file_name);
+char		*create_path(char *word);
+char		**create_argv(char *path, t_token *token);
+int			exec_builtin(t_node *node);
 int			exec_pipeline(t_node *node, int *prev_fd);
+int			wait_pipeline(pid_t last_pid);
 
 // parse dir
 t_node		*parse(t_token *token);

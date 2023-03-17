@@ -8,7 +8,7 @@ INCLUDES = -I./includes -I./libft/includes
 CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
 LIBRARIES = -lreadline -lhistory -lft -L./libft
 G_ADDRESS_FLAGS = -g -fsanitize=address
-SRCS = main.c utils_map.c put_map.c set_map.c destructors_map.c create_minishell_env.c initialize_set_env_map.c
+SRCS = main.c
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.c=%.o))
 SRCS_DIR = ./srcs

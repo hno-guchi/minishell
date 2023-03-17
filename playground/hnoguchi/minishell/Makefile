@@ -9,10 +9,10 @@ CFLAGS = -Wall -Wextra -Werror $(INCLUDES)
 LIBRARIES = -lreadline -lhistory -lft -L./libft
 G_ADDRESS_FLAGS = -g -fsanitize=address
 SRCS = main.c \
-	   utils_map.c create_env.c destructors_map.c initialize_set_env_map.c \
-	   error_func.c xperror.c \
+	   utils_map.c set_map.c put_map.c create_env.c destructors_map.c initialize_set_env_map.c \
+	   error_func.c xperror.c error_number_message.c \
 	   expand.c is_func.c add_character.c try_remove_quote.c append_func.c \
-	   interpret.c search_path.c exec_pipeline.c \
+	   interpret.c create_path.c create_argv.c exec_builtin.c exec_pipeline.c wait_pipeline.c \
 	   parse.c new_node.c at_eof.c list_add_back.c append_args.c append_redirects.c try_append_redirect.c \
 	   pipe.c \
 	   redirect.c stash_fd.c open_redir_file.c read_here_document.c closes_redirect_file.c reset_redirect_command.c \
