@@ -51,6 +51,9 @@ bonus: all
 test: all
 	@./test.sh
 
+check_leaks:
+	ifndef
+
 test_overflow: all
 	$(CC) $(G_ADDRESS_FLAGS) -o $@ $(OBJS) $(LIBRARIES)
 

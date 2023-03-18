@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 07:19:25 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/17 19:45:23 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:29:55 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ t_environ	*new_map(void)
 {
 	t_environ	*new;
 
-	new = calloc(1, sizeof(t_environ));
+	new = ft_calloc(1, sizeof(t_environ));
 	if (new == NULL)
 	{
-		fatal_error("calloc");
+		fatal_error("ft_calloc");
 	}
 	new->head_p = ft_calloc(1, sizeof(t_item));
 	if (new->head_p == NULL)
 	{
-		fatal_error("calloc");
+		fatal_error("ft_calloc");
 	}
 	return (new);
 }
@@ -41,7 +41,7 @@ t_item	*new_item(char *name, char *value)
 	new = ft_calloc(1, sizeof(t_item));
 	if (new == NULL)
 	{
-		fatal_error("calloc");
+		fatal_error("ft_calloc");
 	}
 	new->name = ft_strdup(name);
 	if (new->name == NULL)

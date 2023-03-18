@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/17 14:23:13 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:30:42 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**create_argv(char *path, t_token *token)
 	token = head_p;
 	argv = ft_calloc(size + 1, sizeof(char *));
 	if (argv == NULL)
-		fatal_error("calloc");
+		fatal_error("ft_calloc");
 	argv[0] = path;
 	while (token != NULL)
 	{

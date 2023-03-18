@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:20 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/17 15:08:55 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:40:20 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	*do_search(char *path_env, const char *file_name)
 			path_exec_file = ft_strdup(target);
 			if (path_exec_file == NULL)
 			{
-				fatal_error("strdup");
+				fatal_error("ft_strdup");
 			}
 			return (path_exec_file);
 		}

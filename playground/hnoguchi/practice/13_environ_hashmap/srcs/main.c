@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 07:19:25 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/17 19:35:19 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/18 18:47:24 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ int	main(void)
 
 	print_env_map();
 	frees_map();
-	// system("leaks -q minishell");
+#if define (CHECK_LEAKS)
+	system("leaks -q minishell");
+#endif
 	exit(EXIT_SUCCESS);
 }
 

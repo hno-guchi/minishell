@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 07:19:25 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/17 19:46:31 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/18 17:20:44 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,5 @@ int	set_map(const char *name, const char *value)
 	{
 		return (0);
 	}
-	return (0);
+	return (1);
 }
