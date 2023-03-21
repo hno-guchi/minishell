@@ -38,10 +38,7 @@ static void	closes_file(t_token *args)
 			args = args->next;
 			continue ;
 		}
-		if (close(args->file_fd) < 0)
-		{
-			assert_error("close");
-		}
+		reset_close(&args->file_fd);
 		args = args->next;
 	}
 }

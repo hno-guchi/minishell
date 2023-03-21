@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/17 14:27:26 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/21 12:18:25 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	tokenize_error(char location, char **rest, char *line)
 {
 	g_minishell.syntax_error = true;
+	g_minishell.last_status = ERROR_TOKENIZE;
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd("syntax error near unexpected character `", STDERR_FILENO);
 	ft_putchar_fd(location, STDERR_FILENO);
@@ -29,6 +30,7 @@ void	tokenize_error(char location, char **rest, char *line)
 void	parse_error(t_token **rest, t_token *token)
 {
 	g_minishell.syntax_error = true;
+	g_minishell.last_status = ERROR_PARSE;
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd("syntax error near unexpected token `", STDERR_FILENO);
 	if (token != NULL && token->word != NULL)

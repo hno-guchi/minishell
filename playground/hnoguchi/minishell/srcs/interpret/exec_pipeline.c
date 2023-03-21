@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/17 16:35:46 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/21 20:29:57 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,12 @@ int	exec_pipeline(t_node *node, int *input_pipe)
 	{
 		set_signals_default();
 		prepare_pipe_child(input_pipe, output_pipe);
+		if (is_builtin(node->command->args->word))
+		{
+			// exit(exec_builtin(node));
+			;
+		}
 		/*
-		 * if (is_builtin(node->command->args->word))
-		 * {
-		 * 	exit(exec_builtin(node));
-		 * }
 		 * else
 		 * {
 		 * 	do_child(node);

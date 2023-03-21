@@ -6,14 +6,13 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/18 15:19:32 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/21 18:36:40 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-static bool	is_builtin(const char *command)
+bool	is_builtin(const char *command)
 {
 	if (command == NULL)
 	{
@@ -35,7 +34,6 @@ static bool	is_builtin(const char *command)
 		return (true);
 	return (false);
 }
-*/
 
 int	interpret(t_node *node)
 {
@@ -46,14 +44,18 @@ int	interpret(t_node *node)
 	status = 0;
 	input_pipe[0] = STDIN_FILENO;
 	input_pipe[1] = -1;
-	// if (node->next == NULL && is_builtin(node->command->args->word))
-	// {
-	// 	status = exec_builtin(node);
-	// }
+	if (node->command->args == NULL)
+	{
+		return (0);
+	}
+	if (node->next == NULL && is_builtin(node->command->args->word))
+	{
+		; // status = exec_builtin(node);
+	}
 	// else
 	// {
-	 	last_pid = exec_pipeline(node, input_pipe);
-	 	status = wait_pipeline(last_pid);
+		last_pid = exec_pipeline(node, input_pipe);
+		status = wait_pipeline(last_pid);
 	// }
 	return (status);
 }

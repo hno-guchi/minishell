@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:49:18 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 19:07:24 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/21 19:39:37 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_node	*parse(t_token *token)
 	t_node	*node;
 	t_node	*head_p;
 
-	if (token->kind != TK_WORD)
+	if (token->kind == TK_OPERATOR && ft_strcmp(token->word, "|") == 0)
 	{
 		parse_error(&token, token);
 		return (NULL);

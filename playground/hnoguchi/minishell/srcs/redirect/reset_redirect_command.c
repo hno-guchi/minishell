@@ -23,22 +23,13 @@ static void	close_redirect_file(int *target_fd, t_token *args)
 	{
 		return ;
 	}
-	if (close(*target_fd) < 0)
-	{
-		assert_error("close");
-	}
+	reset_close(target_fd);
 	if (dup2(args->stashed_file_fd, *target_fd) < 0)
 	{
-		assert_error("dup2");
+		fatal_error("dup2");
 	}
-	if (close(args->stashed_file_fd) < 0)
-	{
-		assert_error("close");
-	}
-	if (close(args->file_fd) < 0)
-	{
-		assert_error("close");
-	}
+	reset_close(&args->stashed_file_fd);
+	reset_close(&args->file_fd);
 }
 
 void	reset_redirect_command(t_node *command)

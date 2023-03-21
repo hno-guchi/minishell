@@ -15,7 +15,7 @@ SRCS = main.c \
 	   interpret.c create_path.c create_argv.c exec_builtin.c exec_pipeline.c wait_pipeline.c \
 	   parse.c new_node.c at_eof.c list_add_back.c append_args.c append_redirects.c try_append_redirect.c \
 	   pipe.c \
-	   redirect.c stash_fd.c open_redir_file.c read_here_document.c closes_redirect_file.c reset_redirect_command.c \
+	   redirect.c stash_fd.c reset_close.c open_redir_file.c read_here_document.c closes_redirect_file.c reset_redirect_command.c \
 	   initialize_sa.c initialize_signals.c set_signals_default.c set_signals_ignore.c set_signals_receiver.c \
 	   tokenize.c new_token.c new_token_type_word.c new_token_type_operator.c\
 	   destructor.c
@@ -80,6 +80,20 @@ test: all
 
 test_overflow: all
 	$(CC) $(G_ADDRESS_FLAGS) -o $@ $(OBJS) $(LIBRARIES)
+
+norm:
+	norminette */*.c */*.h
+
+funcs:
+	nm -u minishell | \
+	grep -v "\(readline\|rl_clear_history\|rl_on_new_line\|rl_replace_line\| \
+	rl_redisplay\|	add_history\|printf\|malloc\|free\|write\|access\|open\| \
+	read\|close\|fork\|wait\|waitpid\|wait3\|wait4\|signal\|sigaction\| \
+	sigemptyset\|sigaddset\|kill\|exit\|getcwd\|chdir\|stat\|lstat\|fstat\| \
+	unlink\|execve\|dup\|dup2\|pipe\|opendir\|readdir\|closedir\|strerror\| \
+	perror\|isatty\|ttyname\|ttyslot\|ioctl\|getenv\|tcsetattr\|tcgetattr\| \
+	tgetent\|tgetflag\|tgetnum\|tgetstr\|tgoto\|tputs\)" | \
+	grep -v '\w\+\s_\w\+'
 
 .PHONY: all clean fclean re bonus test libft test_overflow
 

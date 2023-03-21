@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/16 12:41:12 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/21 12:27:37 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,30 @@
 
 t_minishell	g_minishell = {};
 
-static void	execute(t_token *token)
-{
-	t_node	*node;
-
-	node = NULL;
-	node = parse(token);
-	if (g_minishell.syntax_error == true)
-	{
-		g_minishell.last_status = ERROR_PARSE;
-	}
-	else
-	{
-		node = expand(node);
-		if (open_redir_file(node) < 0)
-		{
-			g_minishell.last_status = ERROR_OPEN_REDIR;
-		}
-		else
-		{
-			g_minishell.last_status = interpret(node);
-		}
-		closes_redirect_file(node);
-	}
-	list_frees_node(node);
-}
-
 static void	execute_command(char *line)
 {
 	t_token	*token;
+	t_node	*node;
 
-	token = NULL;
+	node = NULL;
 	token = tokenize(line);
 	if (token->kind == TK_EOF)
 		;
-	else if (g_minishell.syntax_error == true)
+	else if (g_minishell.syntax_error != true)
 	{
-		g_minishell.last_status = ERROR_TOKENIZE;
-	}
-	else
-	{
-		execute(token);
+		node = parse(token);
+		if (g_minishell.syntax_error != true)
+		{
+			node = expand(node);
+			if (open_redir_file(node) < 0)
+			{
+				g_minishell.last_status = ERROR_OPEN_REDIR;
+			}
+			else
+				g_minishell.last_status = interpret(node);
+			closes_redirect_file(node);
+		}
+		list_frees_node(node);
 	}
 	list_frees_token(token);
 }

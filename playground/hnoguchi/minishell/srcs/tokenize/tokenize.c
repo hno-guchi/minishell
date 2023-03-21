@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/15 17:39:27 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/21 21:00:35 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static bool	consume_blank(char **rest, char *line)
 		*rest = line + 1;
 		return (true);
 	}
-	*rest = line;
+	// MEMO: might not need the next like because the pointer is not moved forward
+	// *rest = line;
 	return (false);
 }
 
@@ -54,7 +55,7 @@ t_token	*tokenize(char *line)
 	head.next = NULL;
 	current_token = &head;
 	g_minishell.syntax_error = false;
-	while (*line)
+	while (*line != '\0')
 	{
 		if (consume_blank(&line, line))
 			continue ;

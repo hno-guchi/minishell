@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/17 19:44:25 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/21 20:54:36 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "libft.h"
 # include <fcntl.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 # include <errno.h>
 # include <unistd.h>
 # include <signal.h>
@@ -53,6 +54,7 @@ extern t_minishell			g_minishell;
 
 enum e_token_kind {
 	TK_WORD,
+	// MEMO: reserved token typed not used, is this ok?
 	TK_RESERVED,
 	TK_OPERATOR,
 	TK_EOF
@@ -136,6 +138,7 @@ void		append_special_param(char **new_word, char **rest,
 				char *current_word);
 
 // interpret dir
+bool		is_builtin(const char *command);
 int			interpret(t_node *node);
 char		*create_path(char *word);
 char		**create_argv(char *path, t_token *token);
@@ -161,6 +164,7 @@ void		prepare_pipe_parent(t_node *node, int *input, int *output);
 
 // redirect dir
 int			stash_fd(int fd);
+void		reset_close(int	*target_fd);
 int			open_redir_file(t_node *node);
 void		redirect_file(t_node *command);
 void		reset_redirect_command(t_node *command);
