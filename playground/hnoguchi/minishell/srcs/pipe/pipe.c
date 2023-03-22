@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 18:03:58 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/21 21:48:09 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/22 16:48:40 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ void	prepare_pipe_child(int *input, int *output)
 	}
 }
 
-// MEMO: is this function more about closing the parent's pipes rather than preparing it
-void	prepare_pipe_parent(t_node *node, int *input, int *output)
-// void	close_pipe_parent(t_node *node, int *input, int *output)
+void	close_pipe_parent(t_node *node, int *input, int *output)
 {
 	if (input[0] != STDIN_FILENO)
 	{
@@ -95,7 +93,6 @@ void	prepare_pipe_parent(t_node *node, int *input, int *output)
 	}
 	if (node->next != NULL)
 	{
-		// MEMO: is it ok to close the output here, [1] is the write fd
 		if (close(output[1]) < 0)
 		{
 			fatal_error("close");

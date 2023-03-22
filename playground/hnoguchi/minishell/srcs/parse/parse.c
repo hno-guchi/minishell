@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:49:18 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/21 19:39:37 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/22 13:44:54 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,15 @@ t_node	*parse_simple_command(t_token **rest, t_token *token)
 	while (token != NULL && !at_eof(token->kind))
 	{
 		if (token->kind == TK_WORD)
-			append_args(&node->args, token_dup(token));
-		else if (token->kind == TK_OPERATOR)
 		{
-			if (ft_strcmp(token->word, "|") == 0)
-				break ;
-			else
-				try_append_redirect(node, &token, token);
+			append_args(&node->args, token_dup(token));
 		}
+		else if (token->kind == TK_REDIRECTION)
+		{
+			try_append_redirect(node, &token, token);
+		}
+		else if (token->kind == TK_CONTROL)
+			break ;
 		else
 			parse_error(&token, token);
 		if (g_minishell.syntax_error == true)
@@ -79,17 +80,25 @@ static t_node	*try_create_new_node(t_token *token)
 	t_node	*node;
 
 	node = NULL;
+	if (token->kind != TK_CONTROL)
+		fatal_error("try_create_new_node");
 	if (ft_strcmp(token->word, "|") == 0)
 	{
-		if (token->next->kind == TK_WORD)
+		if (token->next->kind == TK_WORD || token->next->kind == TK_REDIRECTION)
 		{
 			node = new_node(NODE_PIPELINE);
 			if (node == NULL)
+			{
 				fatal_error("new_node");
+			}
 			return (node);
 		}
 		else
 			parse_error(&token, token);
+	}
+	else
+	{
+		parse_error(&token, token);
 	}
 	return (NULL);
 }
@@ -99,7 +108,7 @@ t_node	*parse(t_token *token)
 	t_node	*node;
 	t_node	*head_p;
 
-	if (token->kind == TK_OPERATOR && ft_strcmp(token->word, "|") == 0)
+	if (token->kind == TK_CONTROL)
 	{
 		parse_error(&token, token);
 		return (NULL);
@@ -111,7 +120,7 @@ t_node	*parse(t_token *token)
 	while (token != NULL && !at_eof(token->kind))
 	{
 		node->command = parse_simple_command(&token, token);
-		if (token->kind == TK_OPERATOR)
+		if (token->kind == TK_CONTROL)
 		{
 			node->next = try_create_new_node(token);
 			node = node->next;

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/21 20:54:36 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/22 16:48:56 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@
 # define ERROR_TOKENIZE 258
 # define ERROR_PARSE 258
 # define ERROR_OPEN_REDIR 1
-# define SIZE_OPERATORS_LIST 13
+# define SIZE_OPERATOR_LIST 5
+# define SIZE_CONTROL_LIST 1
+# define SIZE_REDIRECTION_LIST 4
 # define SINGLE_QUOTE_CHAR '\''
 # define DOUBLE_QUOTE_CHAR '"'
 
@@ -54,9 +56,9 @@ extern t_minishell			g_minishell;
 
 enum e_token_kind {
 	TK_WORD,
-	// MEMO: reserved token typed not used, is this ok?
-	TK_RESERVED,
-	TK_OPERATOR,
+	// TK_OPERATOR,
+	TK_CONTROL,
+	TK_REDIRECTION,
 	TK_EOF
 };
 
@@ -160,7 +162,7 @@ void		try_append_redirect(t_node *node, t_token **rest, t_token *token);
 // pipe dir
 void		prepare_pipe(t_node *node, int *next_input, int *output);
 void		prepare_pipe_child(int *input, int *output);
-void		prepare_pipe_parent(t_node *node, int *input, int *output);
+void		close_pipe_parent(t_node *node, int *input, int *output);
 
 // redirect dir
 int			stash_fd(int fd);

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:50 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/21 20:29:57 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/22 16:49:17 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	exec_pipeline(t_node *node, int *input_pipe)
 		do_child(node);
 	}
 	set_signals_ignore();
-	prepare_pipe_parent(node, input_pipe, output_pipe);
+	close_pipe_parent(node, input_pipe, output_pipe);
 	if (node->next != NULL)
 	{
 		return (exec_pipeline(node->next, next_input_pipe));

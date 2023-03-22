@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/21 21:00:35 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/22 16:46:23 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	is_meta_character(const char c)
 	{
 		return (true);
 	}
-	return (c && ft_strchr("|&;()<>\n", c));
+	return (c && ft_strchr("|<>", c));
 }
 
 static bool	consume_blank(char **rest, char *line)
@@ -33,8 +33,6 @@ static bool	consume_blank(char **rest, char *line)
 		*rest = line + 1;
 		return (true);
 	}
-	// MEMO: might not need the next like because the pointer is not moved forward
-	// *rest = line;
 	return (false);
 }
 

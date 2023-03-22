@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/21 21:17:34 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/22 16:47:58 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,6 @@
 
 static int	do_open_file(t_token *token, int flags, mode_t mode)
 {
-	// MEMO: not sure in which conditions the token would not be a word. need checking
-	// if (token->kind != TK_WORD)
-	// {
-	// 	return (0);
-	// }
 	token->file_fd = open(token->word, flags, mode);
 	if (token->file_fd < 0)
 	{
@@ -33,7 +28,7 @@ static int	open_redir_in(t_token *token)
 {
 	while (token != NULL)
 	{
-		if (token->kind == TK_OPERATOR)
+		if (token->kind == TK_REDIRECTION)
 		{
 			if (ft_strcmp(token->word, "<") == 0)
 			{
@@ -61,7 +56,7 @@ static int	open_redir_out(t_token *token)
 {
 	while (token != NULL)
 	{
-		if (token->kind == TK_OPERATOR)
+		if (token->kind == TK_REDIRECTION)
 		{
 			if (ft_strcmp(token->word, ">") == 0)
 			{
