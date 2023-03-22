@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/22 16:48:56 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/22 16:54:52 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ extern t_minishell			g_minishell;
 
 enum e_token_kind {
 	TK_WORD,
-	// TK_OPERATOR,
 	TK_CONTROL,
 	TK_REDIRECTION,
 	TK_EOF

@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 18:03:58 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/22 16:48:40 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/22 16:56:04 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	connect_pipe_stdout_fileno(int *pipe)
 
 void	prepare_pipe_child(int *input, int *output)
 {
-	// 
 	if (0 < output[0])
 	{
 		if (close(output[0]) < 0)
