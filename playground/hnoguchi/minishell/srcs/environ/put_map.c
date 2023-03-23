@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 07:19:25 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/17 19:46:43 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 21:02:05 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,6 @@ static void	put_only_name(char **name, const char *string, char *equol_p)
 		if (*name == NULL)
 		{
 			fatal_error("ft_strdup");
-		}
-	}
-	else if (*(equol_p + 1) == '\0')
-	{
-		*name = ft_strndup(string, equol_p - string);
-		if (*name == NULL)
-		{
-			fatal_error("ft_strndup");
 		}
 	}
 }
@@ -60,7 +52,7 @@ int	put_map(const char *string)
 		return (1);
 	}
 	name_tail_p = ft_strchr(string, '=');
-	if (name_tail_p == NULL || *(name_tail_p + 1) == '\0')
+	if (name_tail_p == NULL)
 	{
 		put_only_name(&name, string, name_tail_p);
 	}
