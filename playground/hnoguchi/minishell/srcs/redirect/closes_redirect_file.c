@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 11:53:18 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:59:20 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 static bool	is_close(t_token *args)
 {
-	// if (args->kind != TK_WORD)
-	// {
-	// 	return (false);
-	// }
 	if (args->file_fd < 0)
 	{
 		return (false);
