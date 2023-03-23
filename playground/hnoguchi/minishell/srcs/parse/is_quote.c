@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:49:18 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 13:46:07 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 14:37:19 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,5 @@
 
 bool	is_quote(const char *str)
 {
-	return (ft_strchr(str, '\"') != NULL
-		|| ft_strchr(str, '\'') != NULL);
+	return (ft_strchr(str, '\"') != NULL || ft_strchr(str, '\'') != NULL);
 }

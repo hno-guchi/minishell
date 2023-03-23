@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 13:46:29 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 14:37:03 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,8 @@ void		append_special_param(char **new_word, char **rest,
 				char *current_word);
 
 // interpret dir
-bool		is_builtin(const char *command);
 int			interpret(t_node *node);
+bool		is_builtin(const char *command);
 char		*create_path(char *word);
 char		**create_argv(char *path, t_token *token);
 int			exec_builtin(t_node *node);
