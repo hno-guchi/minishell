@@ -7,6 +7,11 @@ assert 'echo hello >hello.txt' 'hello.txt'
 assert 'echo hello >f1>f2>f3' 'f1' 'f2' 'f3'
 assert 'echo >f1' 'f1'
 assert 'echo hello >'
+assert '> hello echo hello'
+assert '> hello echo'
+assert '> hello echo hello'
+assert '> hello'
+assert '>'
 
 ## Redirecting input
 assert 'cat <Makefile'
@@ -14,15 +19,22 @@ echo hello>f1
 echo world>f2
 echo 42Tokyo>f3
 assert 'cat <f1<f2<f3'
-rm -f f1 f2 f3
 assert 'cat <hoge'
 assert 'ls <'
+assert '<f1 cat'
+assert '<f1'
+assert '<'
+rm -f f1 f2 f3
 
 ## Appending Redirecting output
 assert 'pwd >>pwd.txt' 'pwd.txt'
 assert 'pwd >>pwd.txt \n pwd >>pwd.txt' 'pwd.txt'
 assert 'echo >>f1' 'f1'
 assert 'echo hello >>'
+assert '>> hello echo hello'
+assert '>>'
+assert '>>hello'
+assert '>>hello echo'
 rm -f f1
 
 ## Here document

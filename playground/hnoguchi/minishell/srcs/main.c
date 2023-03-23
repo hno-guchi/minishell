@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:57:17 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/21 12:27:37 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:15:49 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	execute_command(char *line)
 	list_frees_token(token);
 }
 
-static bool	is_break(char *line)
+static bool	is_exit(char *line)
 {
 	if (line != NULL)
 	{
@@ -78,7 +78,7 @@ int	main(void)
 	while (1)
 	{
 		line = readline("minishell$ ");
-		if (is_break(line))
+		if (is_exit(line))
 		{
 			break ;
 		}

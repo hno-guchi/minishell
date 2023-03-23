@@ -15,7 +15,7 @@ SRCS = main.c \
 	   interpret.c create_path.c create_argv.c exec_builtin.c exec_pipeline.c wait_pipeline.c \
 	   parse.c is_quote.c new_node.c at_eof.c list_add_back.c append_args.c append_redirects.c try_append_redirect.c \
 	   pipe.c \
-	   redirect.c stash_fd.c reset_close.c open_redir_file.c read_here_document.c read_expand_here_document.c closes_redirect_file.c reset_redirect_command.c \
+	   redirect.c stash_fd.c reset_close.c open_redir_file.c read_here_document.c closes_redirect_file.c reset_redirect_command.c \
 	   initialize_sa.c initialize_signals.c set_signals_default.c set_signals_ignore.c set_signals_receiver.c \
 	   tokenize.c new_token.c new_token_type_word.c new_token_type_operator.c\
 	   destructor.c

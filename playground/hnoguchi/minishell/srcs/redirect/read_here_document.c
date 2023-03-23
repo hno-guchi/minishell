@@ -6,13 +6,13 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 11:49:25 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 17:03:48 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	is_break(char *line, t_token *token)
+static bool	is_delimiter(char *line, t_token *token)
 {
 	if (line == NULL)
 	{
@@ -29,6 +29,46 @@ static bool	is_break(char *line, t_token *token)
 	return (false);
 }
 
+static void	write_line_to_pipe(char *line, int fd)
+{
+	if (line != NULL)
+	{
+		if (write(fd, line, ft_strlen(line)) < 0)
+		{
+			fatal_error("write");
+		}
+	}
+	if (write(fd, "\n", 1) < 0)
+	{
+		fatal_error("write");
+	}
+}
+
+static void	write_expand_parameter(char *current_line, int fd)
+{
+	char	*line_expanded;
+
+	line_expanded = NULL;
+	while (*current_line != '\0')
+	{
+		if (is_variable(current_line))
+		{
+			append_variable(&line_expanded, &current_line, current_line);
+		}
+		else if (is_special_parameter(current_line))
+		{
+			append_special_param(&line_expanded, &current_line, current_line);
+		}
+		else
+		{
+			add_character(&line_expanded, *current_line);
+			current_line++;
+		}
+	}
+	write_line_to_pipe(line_expanded, fd);
+	free(line_expanded);
+}
+
 static void	read_until_delimiter(t_token *token, int *pipe_fd)
 {
 	char	*line;
@@ -38,17 +78,17 @@ static void	read_until_delimiter(t_token *token, int *pipe_fd)
 	while (1)
 	{
 		line = readline("> ");
-		if (is_break(line, token))
+		if (is_delimiter(line, token))
 		{
 			break ;
 		}
-		if (write(pipe_fd[1], line, ft_strlen(line)) < 0)
+		if (token->redir_kind == REDIR_HERE_DOC)
 		{
-			fatal_error("write");
+			write_expand_parameter(line, pipe_fd[1]);
 		}
-		if (write(pipe_fd[1], "\n", 1) < 0)
+		else
 		{
-			fatal_error("write");
+			write_line_to_pipe(line, pipe_fd[1]);
 		}
 		free(line);
 		line = NULL;

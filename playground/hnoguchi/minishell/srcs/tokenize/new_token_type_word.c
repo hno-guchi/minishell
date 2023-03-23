@@ -6,13 +6,13 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 11:04:57 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:17:50 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	is_break(char c)
+static bool	is_break_char(char c)
 {
 	if (is_blank(c))
 	{
@@ -70,7 +70,7 @@ t_token	*new_token_type_word(char **rest, char *line)
 	word = NULL;
 	while (*line != '\0')
 	{
-		if (is_break(*line))
+		if (is_break_char(*line))
 			break ;
 		else if (*line == SINGLE_QUOTE_CHAR || *line == DOUBLE_QUOTE_CHAR)
 			increment_until_quote(&line, line, *line);
