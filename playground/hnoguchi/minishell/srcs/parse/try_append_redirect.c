@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:49:18 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 14:28:54 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:29:34 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,15 @@ static t_token	*try_append_here_document(t_node *node, t_node_kind node_kind,
 	else
 	{
 		token = token->next;
-		if (is_quote(token->word))
+		if (!is_quote(token->word))
 		{
 			append_redirects(&node->redirects,
-				token_dup(REDIR_EXPAND_HERE_DOC, token), node_kind);
+				token_dup(REDIR_HERE_DOC, token), node_kind);
 		}
 		else
 		{
 			append_redirects(&node->redirects,
-				token_dup(REDIR_HERE_DOC, token), node_kind);
+				token_dup(REDIR_HERE_DOC_NOT_EXPAND, token), node_kind);
 		}
 	}
 	return (token);

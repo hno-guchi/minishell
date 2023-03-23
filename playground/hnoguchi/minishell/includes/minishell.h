@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 14:41:01 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:27:59 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ enum e_redir_kind {
 	REDIR_NOT,
 	REDIR_IN,
 	REDIR_HERE_DOC,
-	REDIR_EXPAND_HERE_DOC,
+	REDIR_HERE_DOC_NOT_EXPAND,
 	REDIR_OUT,
 	REDIR_APPEND_OUT
 };
