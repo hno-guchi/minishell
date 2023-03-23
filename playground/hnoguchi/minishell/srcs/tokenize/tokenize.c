@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/22 16:46:23 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:56:03 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,6 @@ t_token	*tokenize(char *line)
 		else
 			tokenize_error(*line, &line, line);
 	}
-	current_token->next = new_token(TK_EOF, NULL);
+	current_token->next = new_token(TK_EOF, REDIR_NOT, NULL);
 	return (head.next);
 }
