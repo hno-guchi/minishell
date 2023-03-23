@@ -6,26 +6,29 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:49:18 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/22 13:44:54 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:37:12 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*token_dup(t_token *source)
+t_token	*token_dup(t_redir_kind redir_kind, t_token *source)
 {
+	t_token	*new;
 	char	*word;
 
 	if (source == NULL)
 	{
 		return (NULL);
 	}
+	new = NULL;
 	word = ft_strdup(source->word);
 	if (word == NULL)
 	{
 		fatal_error("strdup");
 	}
-	return (new_token(source->kind, word));
+	new = new_token(source->kind, redir_kind, word);
+	return (new);
 }
 
 /*
@@ -57,7 +60,7 @@ t_node	*parse_simple_command(t_token **rest, t_token *token)
 	{
 		if (token->kind == TK_WORD)
 		{
-			append_args(&node->args, token_dup(token));
+			append_args(&node->args, token_dup(REDIR_NOT, token));
 		}
 		else if (token->kind == TK_REDIRECTION)
 		{

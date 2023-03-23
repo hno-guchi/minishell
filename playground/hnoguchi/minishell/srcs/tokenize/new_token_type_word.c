@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/15 19:56:40 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:04:57 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_token	*new_token_type_word(char **rest, char *line)
 	else
 	{
 		*rest = line;
-		return (new_token(TK_WORD, word));
+		return (new_token(TK_WORD, REDIR_NOT, word));
 	}
 	tokenize_error(*line, &line, line);
 	return (NULL);

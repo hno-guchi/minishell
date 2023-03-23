@@ -6,13 +6,13 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/18 17:31:01 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:03:59 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*new_token(t_token_kind kind, char *word)
+t_token	*new_token(t_token_kind kind, t_redir_kind redir_kind, char *word)
 {
 	t_token	*new_token;
 
@@ -23,6 +23,7 @@ t_token	*new_token(t_token_kind kind, char *word)
 	}
 	new_token->word = word;
 	new_token->kind = kind;
+	new_token->redir_kind = redir_kind;
 	new_token->file_fd = -1;
 	new_token->stashed_file_fd = -1;
 	new_token->next = NULL;

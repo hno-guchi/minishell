@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/22 16:54:52 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:20:42 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 # define END "\x1b[39m"
 
 typedef enum e_token_kind	t_token_kind;
+typedef enum e_redir_kind	t_redir_kind;
 typedef enum e_node_kind	t_node_kind;
 typedef struct s_minishell	t_minishell;
 typedef struct s_token		t_token;
@@ -59,6 +60,15 @@ enum e_token_kind {
 	TK_CONTROL,
 	TK_REDIRECTION,
 	TK_EOF
+};
+
+enum e_redir_kind {
+	REDIR_NOT,
+	REDIR_IN,
+	REDIR_HERE_DOC,
+	REDIR_EXPAND_HERE_DOC,
+	REDIR_OUT,
+	REDIR_APPEND_OUT
 };
 
 enum e_node_kind {
@@ -79,6 +89,7 @@ typedef struct s_minishell {
 struct s_token {
 	char			*word;
 	t_token_kind	kind;
+	t_redir_kind	redir_kind;
 	int				file_fd;
 	int				stashed_file_fd;
 	t_token			*next;
@@ -150,7 +161,7 @@ int			wait_pipeline(pid_t last_pid);
 // parse dir
 t_node		*parse(t_token *token);
 t_node		*new_node(t_node_kind kind);
-t_token		*token_dup(t_token *source);
+t_token		*token_dup(t_redir_kind redir_kind, t_token *source);
 bool		at_eof(t_token_kind kind);
 void		append_args(t_token **args, t_token *add_token);
 void		append_redirects(t_node **redir, t_token *add_token,
@@ -186,7 +197,7 @@ void		signal_ignore_handler(int signal);
 t_token		*tokenize(char *line);
 bool		is_blank(char c);
 bool		is_meta_character(const char c);
-t_token		*new_token(t_token_kind kind, char *word);
+t_token		*new_token(t_token_kind kind, t_redir_kind redir_kind, char *word);
 t_token		*new_token_type_word(char **rest, char *line);
 t_token		*new_token_type_operator(char **rest, char *line);
 

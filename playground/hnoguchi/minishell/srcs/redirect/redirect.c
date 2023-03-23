@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/22 16:47:36 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:42:04 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@ static void	do_redirect(int *target_fd, t_token *args)
 	}
 	while (args != NULL)
 	{
-		if (args->kind == TK_REDIRECTION)
-			;
-		else if (args->file_fd != *target_fd)
+		// if (args->kind == TK_REDIRECTION)
+		// if (args->redir_kind == REDIR_NOT)
+		// 	;
+		// else if (args->file_fd != *target_fd)
+		if (args->file_fd != *target_fd)
 		{
 			args->stashed_file_fd = stash_fd(*target_fd);
 			if (dup2(args->file_fd, *target_fd) < 0)

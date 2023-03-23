@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/22 12:27:23 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:13:15 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ static t_token	*try_new_token(const char *operator)
 	}
 	else if (is_control(dup))
 	{
-		return (new_token(TK_CONTROL, dup));
+		return (new_token(TK_CONTROL, REDIR_NOT, dup));
 	}
 	else if (is_redirection(dup))
 	{
-		return (new_token(TK_REDIRECTION, dup));
+		return (new_token(TK_REDIRECTION, REDIR_NOT, dup));
 	}
 	free(dup);
 	return (NULL);

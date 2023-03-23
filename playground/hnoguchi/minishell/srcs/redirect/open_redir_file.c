@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/22 16:47:58 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:48:51 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,35 @@ static int	open_redir_in(t_token *token)
 {
 	while (token != NULL)
 	{
-		if (token->kind == TK_REDIRECTION)
+		// if (token->kind == TK_REDIRECTION)
+		if (token->redir_kind == REDIR_IN)
 		{
-			if (ft_strcmp(token->word, "<") == 0)
-			{
-				token = token->next;
+		// 	if (ft_strcmp(token->word, "<") == 0)
+		// 	{
+		// 		token = token->next;
 				if (do_open_file(token, O_RDONLY, 0644) < 0)
 				{
 					return (-1);
 				}
-			}
-			else if (ft_strcmp(token->word, "<<") == 0)
-			{
-				token = token->next;
+		// 	}
+		}
+		else if (token->redir_kind == REDIR_HERE_DOC)
+		{
+		// 	else if (ft_strcmp(token->word, "<<") == 0)
+		// 	{
+		// 		token = token->next;
 				if (read_here_document(token) < 0)
 				{
 					return (-1);
 				}
-			}
+		// 	}
+		}
+		else if (token->redir_kind == REDIR_EXPAND_HERE_DOC)
+		{
+				if (read_here_document(token) < 0)
+				{
+					return (-1);
+				}
 		}
 		token = token->next;
 	}
@@ -56,25 +67,29 @@ static int	open_redir_out(t_token *token)
 {
 	while (token != NULL)
 	{
-		if (token->kind == TK_REDIRECTION)
+		// if (token->kind == TK_REDIRECTION)
+		if (token->redir_kind == REDIR_OUT)
 		{
-			if (ft_strcmp(token->word, ">") == 0)
-			{
-				token = token->next;
+		// 	if (ft_strcmp(token->word, ">") == 0)
+		// 	{
+		// 		token = token->next;
 				if (do_open_file(token, O_WRONLY | O_CREAT | O_TRUNC, 0644) < 0)
 				{
 					return (-1);
 				}
-			}
-			else if (ft_strcmp(token->word, ">>") == 0)
-			{
+		// 	}
+		}
+		else if (token->redir_kind == REDIR_APPEND_OUT)
+		{
+		// 	else if (ft_strcmp(token->word, ">>") == 0)
+		// 	{
 				token = token->next;
 				if (do_open_file(token, O_WRONLY | O_CREAT | O_APPEND,
 						0644) < 0)
 				{
 					return (-1);
 				}
-			}
+		// 	}
 		}
 		token = token->next;
 	}
