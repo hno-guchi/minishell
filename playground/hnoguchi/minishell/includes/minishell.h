@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 14:37:03 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 14:41:01 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ void		redirect_file(t_node *command);
 void		reset_redirect_command(t_node *command);
 void		closes_redirect_file(t_node *node);
 int			read_here_document(t_token *token);
+int			read_expand_here_document(t_token *token);
 void		reset_redirect_command(t_node *command);
 
 // signal dir
