@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:37 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 14:39:55 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 15:38:49 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,48 @@ static bool	is_break(char *line, t_token *token)
 	return (false);
 }
 
+static void	expand_parameter(char **new_line, char *current_line)
+{
+	while (*current_line != '\0')
+	{
+		if (is_variable(current_line))
+		{
+			append_variable(new_line, &current_line, current_line);
+		}
+		else if (is_special_parameter(current_line))
+		{
+			append_special_param(new_line, &current_line, current_line);
+		}
+		else
+		{
+			add_character(new_line, *current_line);
+			current_line++;
+		}
+	}
+}
+
+static void	write_line_to_pipe(char *line, int fd)
+{
+	if (line != NULL)
+	{
+		if (write(fd, line, ft_strlen(line)) < 0)
+		{
+			fatal_error("write");
+		}
+	}
+	if (write(fd, "\n", 1) < 0)
+	{
+		fatal_error("write");
+	}
+}
+
 static void	read_until_delimiter(t_token *token, int *pipe_fd)
 {
 	char	*line;
+	char	*line_expanded;
 
 	line = NULL;
+	line_expanded = NULL;
 	g_minishell.readline_interrupted = false;
 	while (1)
 	{
@@ -42,16 +79,12 @@ static void	read_until_delimiter(t_token *token, int *pipe_fd)
 		{
 			break ;
 		}
-		if (write(pipe_fd[1], line, ft_strlen(line)) < 0)
-		{
-			fatal_error("write");
-		}
-		if (write(pipe_fd[1], "\n", 1) < 0)
-		{
-			fatal_error("write");
-		}
+		expand_parameter(&line_expanded, line);
+		write_line_to_pipe(line_expanded, pipe_fd[1]);
 		free(line);
+		free(line_expanded);
 		line = NULL;
+		line_expanded = NULL;
 	}
 	if (line != NULL)
 		free(line);
