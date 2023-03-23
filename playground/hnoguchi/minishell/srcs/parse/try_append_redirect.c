@@ -6,122 +6,76 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:49:18 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 12:09:21 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 14:28:54 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	try_append_output(t_node *node, t_token **rest, t_token *token)
+static t_token	*try_append(t_node *node, t_node_kind node_kind,
+		t_redir_kind redir_kind, t_token *token)
 {
-	if (token->next->kind == TK_WORD)
-	{
-		if (token->next->word == NULL)
-		{
-			parse_error(&token, token);
-			*rest = token;
-			return ;
-		}
-		token = token->next;
-		append_redirects(&node->redirects,
-			token_dup(REDIR_OUT, token), NODE_REDIR_OUT);
-	}
-	else
+	if (token->next->kind != TK_WORD)
 	{
 		parse_error(&token, token->next);
 	}
-	*rest = token;
-}
-
-static void	try_append_input(t_node *node, t_token **rest, t_token *token)
-{
-	if (token->next->kind == TK_WORD)
+	else if (token->next->word == NULL)
 	{
-		if (token->next->word == NULL)
-		{
-			parse_error(&token, token);
-			*rest = token;
-			return ;
-		}
-		token = token->next;
-		append_redirects(&node->redirects,
-			token_dup(REDIR_IN, token), NODE_REDIR_IN);
+		parse_error(&token, token);
 	}
 	else
 	{
-		parse_error(&token, token->next);
+		token = token->next;
+		append_redirects(&node->redirects,
+			token_dup(redir_kind, token), node_kind);
 	}
-	*rest = token;
+	return (token);
 }
 
-static void	try_append_append_output(t_node *node, t_token **rest,
+static t_token	*try_append_here_document(t_node *node, t_node_kind node_kind,
 		t_token *token)
 {
-	if (token->next->kind == TK_WORD)
-	{
-		if (token->next->word == NULL)
-		{
-			parse_error(&token, token);
-			*rest = token;
-			return ;
-		}
-		token = token->next;
-		append_redirects(&node->redirects,
-			token_dup(REDIR_APPEND_OUT, token), NODE_REDIR_OUT);
-	}
-	else
+	if (token->next->kind != TK_WORD)
 	{
 		parse_error(&token, token->next);
 	}
-	*rest = token;
-}
-
-bool	is_quote(const char *str)
-{
-	return (ft_strchr(str, '\"') != NULL
-		|| ft_strchr(str, '\'') != NULL);
-}
-
-static void	try_append_here_document(t_node *node, t_token **rest,
-		t_token *token)
-{
-	if (token->next->kind == TK_WORD)
+	else if (token->next->word == NULL)
 	{
-		if (token->next->word == NULL)
-		{
-			parse_error(&token, token);
-			*rest = token;
-			return ;
-		}
+		parse_error(&token, token);
+	}
+	else
+	{
 		token = token->next;
 		if (is_quote(token->word))
-			append_redirects(&node->redirects, token_dup(REDIR_EXPAND_HERE_DOC, token), NODE_REDIR_IN);
+		{
+			append_redirects(&node->redirects,
+				token_dup(REDIR_EXPAND_HERE_DOC, token), node_kind);
+		}
 		else
-			append_redirects(&node->redirects, token_dup(REDIR_HERE_DOC, token), NODE_REDIR_IN);
+		{
+			append_redirects(&node->redirects,
+				token_dup(REDIR_HERE_DOC, token), node_kind);
+		}
 	}
-	else
-	{
-		parse_error(&token, token->next);
-	}
-	*rest = token;
+	return (token);
 }
 
 void	try_append_redirect(t_node *node, t_token **rest, t_token *token)
 {
 	if (ft_strcmp(token->word, ">") == 0)
 	{
-		try_append_output(node, rest, token);
+		*rest = try_append(node, NODE_REDIR_OUT, REDIR_OUT, token);
 	}
 	else if (ft_strcmp(token->word, "<") == 0)
 	{
-		try_append_input(node, rest, token);
+		*rest = try_append(node, NODE_REDIR_IN, REDIR_IN, token);
 	}
 	else if (ft_strcmp(token->word, ">>") == 0)
 	{
-		try_append_append_output(node, rest, token);
+		*rest = try_append(node, NODE_REDIR_OUT, REDIR_APPEND_OUT, token);
 	}
 	else if (ft_strcmp(token->word, "<<") == 0)
 	{
-		try_append_here_document(node, rest, token);
+		*rest = try_append_here_document(node, NODE_REDIR_IN, token);
 	}
 }

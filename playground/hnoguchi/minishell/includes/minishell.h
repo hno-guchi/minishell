@@ -6,7 +6,7 @@
 /*   By: hnoguchi <hnoguchi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 11:58:07 by hnoguchi          #+#    #+#             */
-/*   Updated: 2023/03/23 11:20:42 by hnoguchi         ###   ########.fr       */
+/*   Updated: 2023/03/23 13:46:29 by hnoguchi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ int			wait_pipeline(pid_t last_pid);
 
 // parse dir
 t_node		*parse(t_token *token);
+bool		is_quote(const char *str);
 t_node		*new_node(t_node_kind kind);
 t_token		*token_dup(t_redir_kind redir_kind, t_token *source);
 bool		at_eof(t_token_kind kind);
